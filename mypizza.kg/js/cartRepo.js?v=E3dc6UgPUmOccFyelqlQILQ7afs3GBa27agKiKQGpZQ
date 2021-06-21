@@ -1,0 +1,102 @@
+﻿function AddToCart(cartItem) {
+    //console.log("CARTREPO");
+    //console.log(cartItem);
+    //console.log("CARTREPO END");
+    if (cartItem.Count == 0) {
+        localStorage.removeItem("c." + cartItem.Id);
+        return;
+    }
+    localStorage.setItem("c." + cartItem.Id, JSON.stringify(cartItem));
+}
+
+function AddComboToCart(data, id) {
+    if (AddComboId(id)) {
+        localStorage.setItem(id, JSON.stringify(data));
+        return true;
+    }
+    return false;
+}
+
+function UpdateComboOnCart(data, id) {
+    var combos = localStorage.getItem(id);
+    if (combos === null || combos === undefined)
+        return;
+    localStorage.setItem(id,JSON.stringify(data));
+}
+
+function RemoveComboItem(comboId) {
+    var combos = JSON.parse(localStorage.getItem("combo"));
+    if (combos !== null && combos !== undefined) {
+        var combs = new Array();
+        for (var i = 0; i < combos.length; i++) {
+            if (comboId !== combos[i]) {
+                combs.push(combos[i]);
+            }
+        }
+        if (combs.length > 0) {
+            localStorage.setItem("combo", JSON.stringify(combs));
+        } else {
+            localStorage.removeItem("combo");
+        }
+        localStorage.removeItem(comboId);
+        return true;
+    }
+    return false;
+}
+
+function GetComboFromCart(id) {
+    var combos = localStorage.getItem(id);
+    if (combos === null || combos === undefined)
+        return null;
+    return JSON.parse(combos);
+}
+
+function AddComboId(id) {
+    var combos = JSON.parse(localStorage.getItem("combo"));
+    if (combos === null || combos===undefined){
+        var combs = new Array(id);
+        localStorage.setItem("combo", JSON.stringify(combs));
+    } else {
+        for (var i = 0; i < combos.length; i++) {
+            if (combos[i] == id) {
+                return false;
+            }
+        }
+        combos.push(id);
+        localStorage.setItem("combo", JSON.stringify(combos));
+    }
+    return true;
+}
+
+function GetAllComboIds() {
+    var combos = localStorage.getItem("combo");
+    if (combos === null || combos === undefined)
+        return [];
+    return JSON.parse(combos);
+}
+
+
+function GetCart() {
+    var arr = new Array();
+    for (var i = 0; i < localStorage.length; i++) {
+        var item = GetFromCart(localStorage.key(i));
+        if (item !== null && item !== undefined) arr.push(item);
+    }
+    return arr;
+}
+
+function GetFromCart(id) {
+    if (id.toString().substring(0, 2) !== "c.") id = "c." + id;
+    return JSON.parse(localStorage.getItem(id));
+}
+
+function GetCartCount() {
+    var count = localStorage.getItem("Cart.Count");
+    if (count === null)
+        return 0;
+    return count;
+}
+
+function SaveCartCount(count) {
+    localStorage.setItem("Cart.Count", count);
+}

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon icon" href="../../img/logo.png" />
+    <title id="Tname">&#x412;&#x430;&#x43A;&#x430;&#x43D;&#x441;&#x438;&#x44F;
+        &#x41E;&#x444;&#x438;&#x446;&#x438;&#x430;&#x43D;&#x442;&#x44B; | Империя пиццы</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" id="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+    <meta name="HandheldFriendly" content="true">
+
+
+
+    <link rel="stylesheet" href="../../css/reset.css%3Fv=WSyRWvPZGf_m-86d4f_Ihbt3CXmqvHYHSkWJf6o0euU.css">
+    <link rel="stylesheet"
+        href="../../fonts/font-awesome-4.7.0/fonts/font-awesome.min.css%3Fv=gg4WnOJIJAZtmXP9S2Vhqunc1tvvZDXakF1aHWSCmXw.css" />
+    <link rel="stylesheet"
+        href="../../plugins/swiper/css/swiper.min.css%3Fv=0eq7ypooFiUey_mtgx1ZnlnGoEO0S7jEuS3wHyaXRsQ.css" />
+    <link rel="stylesheet"
+        href="../../plugins/editable-select/jquery-editable-select.min.css%3Fv=x5-B87XNfhUkwrYryaWGt-TQ9P1AxUe8P4R6xAyfU7E.css" />
+    <link rel="stylesheet" href="../../css/karma.css%3Fv=YAZqU5wk0FTSsxTCNqrgoC7q9-L4QBZ4zA0bOZzgAy8.css">
+    <link rel="stylesheet" href="../../css/mobile.css%3Fv=t7i78DFeLumkaDltne6UCyGClbEKkU3NqucFYXyIeYM.css">
+    <link rel="stylesheet" href="../../js/select2/select2.css%3Fv=Nf34vgKBw0AgQv6PtcfcEkE02mn9G5cA98BsHT84Bro.css">
+
+
+    <script type="text/javascript" src="../../plugins/swiper/js/swiper.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="../../plugins/editable-select/jquery-editable-select.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=cyrillic" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="loaderId" class="pizza_loader_none">
+        <canvas id="loaderCanvasId" class="pizza"></canvas>
+    </div>
+    <div class="c-site">
+        <header class="c-header">
+            <div class="c-layout clearfix">
+                <div class="c-header__logos clearfix c-wrapper">
+                    <div class="c-header__logo">
+                        <a href="../../index.html">
+                            <img src="../../img/logo--pizza.png" alt="" />
+                        </a>
+                    </div>
+                    <div class="c-header__logo o-glow">
+                        <a href="../../index.html">
+                            <img src="../../img/logo--sushi.png" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="actions-stock">
+                    <div class="c-actions js-actions c-wrapp">
+
+
+                        <nav class="c-header__nav js-header__nav">
+                            <ul class="menu">
+                                <li><a href="../../index.html">Меню</a></li>
+                                <li>
+                                    <a href="../../Shares.html">Акции</a>
+                                    <ul id="NavigationPartial_AB" data-bind="foreach: observableArray">
+                                        <li><a data-bind="attr:{'href': '/Shares/ShareItem/'+id()},text:header()">Нету
+                                                акций</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="../../Vacancies.html">Вакансии</a></li>
+                                <li><a href="../../Company/About.html">о Компании</a>
+                                    <ul>
+                                        <li><a href="../../Company/AddressPage.html">Контакты и адреса</a></li>
+                                        <li><a href="../../Company/DeliveryMaps.html">Карта и зоны доставки</a></li>
+                                        <li><a href="../../Company/DeliveryRules.html">Правила</a></li>
+                                        <li><a href="../../Company/Instructions.html">Инструкции</a></li>
+                                        <li><a href="../../Company/FeedBack.html">Обратная связь</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <script>
+                            function Promotions(promotions) {
+                                var self = this;
+                                self.observableArray = ko.observableArray();
+                                for (var i = 0; i < promotions.length; ++i) {
+                                    self.observableArray.push(new Promotion(promotions[i]));
+                                }
+                            }
+
+                            function Promotion(promotion) {
+                                var self = this;
+                                self.id = ko.observable(promotion.id);
+                                self.header = ko.observable(promotion.header);
+                                self.backgroundImage = ko.observable(promotion.backgroundImage);
+                            }
+
+                            $.ajax({
+                                type: "GET",
+                                url: "/News/GetNewsActionResult",
+                                data: {},
+                                contentType: "application/json;charset=utf-8",
+                                dataType: "json",
+                                success: function (result) {
+                                    ko.applyBindings(new Promotions(result), document.getElementById("NavigationPartial_AB"));
+                                },
+                                error: function (response) {
+                                    console.log("error");
+                                }
+                            });
+                        </script>
+
+
+                        <div class="c-header__phones">
+                            <div class="c-phones__list">
+                                <a href="tel:0312510707">0 (312) 51-07-07</a><br>
+                                <a href="tel:0551510707">0 (551) 51-07-07</a><br>
+                                <a href="tel:0772510707">0 (772) 51-07-07</a><br>
+                                <a href="tel:0704510707">0 (704) 51-07-07</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="c-header__cart c-wrapper">
+                    <a href="../../Cart.html">Корзина</a>
+                </div>
+                <div class="c-nav--mobile c-wrapper">
+                    <div class="c-hamburger js-hamburger"></div>
+                    <div class="c-phones__trigger js-phones__trigger"></div>
+                </div>
+            </div>
+        </header>
+        <div class="content container">
+
+
+            <div class="c-wrapper">
+                <main class="c-main">
+                    <div class="c-layout clearfix">
+                        <div class="c-content">
+                            <h1 class="c-main__title">
+                                Вакансия-&#x41E;&#x444;&#x438;&#x446;&#x438;&#x430;&#x43D;&#x442;&#x44B;</h1>
+                            <div class="c-column">
+                                <div class="c-vacancy">
+                                    <div class="c-vacancy__title">
+                                        &#x41E;&#x444;&#x438;&#x446;&#x438;&#x430;&#x43D;&#x442;&#x44B;</div>
+                                    <div class="c-content__text" style="white-space: pre-line">
+                                        &#x412; &#x441;&#x435;&#x442;&#x44C;
+                                        &#x437;&#x430;&#x432;&#x435;&#x434;&#x435;&#x43D;&#x438;&#x439;
+                                        &quot;&#x418;&#x43C;&#x43F;&#x435;&#x440;&#x438;&#x44F;
+                                        &#x41F;&#x438;&#x446;&#x446;&#x44B;&quot;
+                                        &#x442;&#x440;&#x435;&#x431;&#x443;&#x44E;&#x442;&#x441;&#x44F;
+                                        &#x41E;&#x424;&#x418;&#x426;&#x418;&#x410;&#x41D;&#x422;&#x42B;&#xD;&#xA;&#xD;&#xA;&#x41E;&#x43F;&#x44B;&#x442;
+                                        &#x440;&#x430;&#x431;&#x43E;&#x442;&#x44B;
+                                        &#x43F;&#x440;&#x438;&#x432;&#x435;&#x442;&#x441;&#x442;&#x432;&#x443;&#x435;&#x442;&#x441;&#x44F;,
+                                        &#x43D;&#x43E; &#x43D;&#x435;
+                                        &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x435;&#x43D;.
+                                        &#x41C;&#x44B; &#x432;&#x441;&#x435;&#x43C;&#x443; &#x441;&#x430;&#x43C;&#x438;
+                                        &#x43E;&#x431;&#x443;&#x447;&#x430;&#x435;&#x43C;.&#xD;&#xA;&#x413;&#x438;&#x431;&#x43A;&#x438;&#x439;
+                                        &#x433;&#x440;&#x430;&#x444;&#x438;&#x43A;.&#xD;&#xA;&#xD;&#xA;&#x413;&#x440;&#x430;&#x444;&#x438;&#x43A;
+                                        &#x440;&#x430;&#x431;&#x43E;&#x442;&#x44B;
+                                        &#x43E;&#x444;&#x438;&#x446;&#x438;&#x430;&#x43D;&#x442;&#x43E;&#x432;:&#xD;&#xA;&#xD;&#xA;1.
+                                        &#x421;&#x443;&#x442;&#x43A;&#x438; &#x447;&#x435;&#x440;&#x435;&#x437;
+                                        &#x434;&#x432;&#x43E;&#x435;. &#x421;&#x43C;&#x435;&#x43D;&#x430; &#x441; 10.00
+                                        &#x443;&#x442;&#x440;&#x430; &#x434;&#x43E; 10:00 &#x443;&#x442;&#x440;&#x430;
+                                        &#x441;&#x43B;&#x435;&#x434;&#x443;&#x44E;&#x449;&#x435;&#x433;&#x43E;
+                                        &#x434;&#x43D;&#x44F;.&#xD;&#xA;2.
+                                        &#x421;&#x43C;&#x435;&#x43D;&#x43D;&#x44B;&#x439;, 12-&#x442;&#x438;
+                                        &#x447;&#x430;&#x441;&#x43E;&#x432;&#x43E;&#x439;, 2/1: 1-&#x439;
+                                        &#x434;&#x435;&#x43D;&#x44C; &#x441; 09:00-20:00, 2-&#x439;
+                                        &#x434;&#x435;&#x43D;&#x44C; &#x441; 20:00-09:00, 3-&#x439;
+                                        &#x434;&#x435;&#x43D;&#x44C;
+                                        &#x43E;&#x442;&#x434;&#x44B;&#x445;&#x430;&#x435;&#x442;&#x435;.&#xD;&#xA;&#xD;&#xA;&#x41B;&#x438;&#x447;&#x43D;&#x44B;&#x435;
+                                        &#x43A;&#x430;&#x447;&#x435;&#x441;&#x442;&#x432;&#x430;:
+                                        &#x43A;&#x43E;&#x43C;&#x43C;&#x443;&#x43D;&#x438;&#x43A;&#x430;&#x431;&#x435;&#x43B;&#x44C;&#x43D;&#x43E;&#x441;&#x442;&#x44C;,
+                                        &#x443;&#x43C;&#x435;&#x43D;&#x438;&#x435;
+                                        &#x440;&#x430;&#x431;&#x43E;&#x442;&#x430;&#x442;&#x44C; &#x432;
+                                        &#x43A;&#x43E;&#x43C;&#x430;&#x43D;&#x434;&#x435;,
+                                        &#x441;&#x442;&#x440;&#x435;&#x441;&#x441;&#x43E;&#x443;&#x441;&#x442;&#x43E;&#x439;&#x447;&#x438;&#x432;&#x43E;&#x441;&#x442;&#x44C;
+                                        &#x438;
+                                        &#x434;&#x43E;&#x431;&#x440;&#x43E;&#x436;&#x435;&#x43B;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x43E;&#x441;&#x442;&#x44C;,
+                                        &#x445;&#x43E;&#x440;&#x43E;&#x448;&#x435;&#x435;
+                                        &#x437;&#x43D;&#x430;&#x43D;&#x438;&#x435;
+                                        &#x440;&#x443;&#x441;&#x441;&#x43A;&#x43E;&#x433;&#x43E;
+                                        &#x44F;&#x437;&#x44B;&#x43A;&#x430;.&#xD;&#xA;&#x41D;&#x430;
+                                        &#x434;&#x430;&#x43D;&#x43D;&#x443;&#x44E;
+                                        &#x434;&#x43E;&#x43B;&#x436;&#x43D;&#x43E;&#x441;&#x442;&#x44C;
+                                        &#x440;&#x430;&#x441;&#x441;&#x43C;&#x430;&#x442;&#x440;&#x438;&#x432;&#x430;&#x435;&#x43C;
+                                        &#x43A;&#x430;&#x43D;&#x434;&#x438;&#x434;&#x430;&#x442;&#x43E;&#x432;
+                                        &#x43E;&#x442; 18 &#x43B;&#x435;&#x442; &#x438;
+                                        &#x441;&#x442;&#x430;&#x440;&#x448;&#x435;.&#xD;&#xA;&#xD;&#xA;
+                                        &#xD;&#xA;&#xD;&#xA;&#x41F;&#x43E; &#x432;&#x441;&#x435;&#x43C;
+                                        &#x432;&#x43E;&#x43F;&#x440;&#x43E;&#x441;&#x430;&#x43C;
+                                        &#x442;&#x43E;&#x43B;&#x44C;&#x43A;&#x43E; WhatsApp 0551 865550
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-column">
+                                <div class="c-form">
+                                    <form method="post" id="anket_form">
+                                        <input type="hidden" name="Id" class="uniqueForm" data-val="true"
+                                            data-val-required="The Id field is required." id="Id" value="10">
+                                        <div class="c-form__info">Поля, обязательные для заполнения, помечены *</div>
+                                        <div class="c-form__item">
+                                            <label for="FullName">&#x424;&#x418;&#x41E; *</label>
+                                            <input type="text" name="FullName" class="uniqueForm" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x424;&#x418;&#x41E;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="FullName" value="">
+                                            <span class="uniqueHidden field-validation-valid" name="FullName"
+                                                style="color: red" data-valmsg-for="FullName"
+                                                data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label for="PhoneNumber">&#x422;&#x435;&#x43B;&#x435;&#x444;&#x43E;&#x43D;
+                                                *</label>
+                                            <input type="tel" id="phone" placeholder="номер телефона" name="PhoneNumber"
+                                                class="uniqueForm" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x422;&#x435;&#x43B;&#x435;&#x444;&#x43E;&#x43D;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                value="">
+                                            <span name="PhoneNumber" style="color: red"
+                                                class="uniqueHidden field-validation-valid"
+                                                data-valmsg-for="PhoneNumber" data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="VacancyId">&#x414;&#x43E;&#x43B;&#x436;&#x43D;&#x43E;&#x441;&#x442;&#x44C;,
+                                                &#x43D;&#x430; &#x43A;&#x43E;&#x442;&#x43E;&#x440;&#x443;&#x44E;
+                                                &#x412;&#x44B;
+                                                &#x43F;&#x440;&#x435;&#x442;&#x435;&#x43D;&#x434;&#x443;&#x435;&#x442;&#x435;
+                                                *</label>
+                                            <select name="VacancyId" class="uniqueForm" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x414;&#x43E;&#x43B;&#x436;&#x43D;&#x43E;&#x441;&#x442;&#x44C;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="VacancyId">
+                                                <option value="10">
+                                                    &#x41E;&#x444;&#x438;&#x446;&#x438;&#x430;&#x43D;&#x442;&#x44B;
+                                                </option>
+                                                <option value="11">&#x41F;&#x43E;&#x432;&#x430;&#x440;</option>
+                                            </select>
+                                            <span name="VacancyId" style="color: red"
+                                                class="uniqueHidden field-validation-valid" data-valmsg-for="VacancyId"
+                                                data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label for="Birthday">&#x414;&#x430;&#x442;&#x430;
+                                                &#x440;&#x43E;&#x436;&#x434;&#x435;&#x43D;&#x438;&#x44F; *</label>
+                                            <input type="date" name="Birthday" class="uniqueForm" value="1900-01-01"
+                                                data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x414;&#x430;&#x442;&#x430; &#x440;&#x43E;&#x436;&#x434;&#x435;&#x43D;&#x438;&#x44F;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="Birthday">
+                                            <span name="Birthday" style="color: red"
+                                                class="uniqueHidden field-validation-valid" data-valmsg-for="Birthday"
+                                                data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="Citizenship">&#x413;&#x440;&#x430;&#x436;&#x434;&#x430;&#x43D;&#x441;&#x442;&#x432;&#x43E;
+                                                *</label>
+                                            <input type="text" name="Citizenship" class="uniqueForm" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x413;&#x440;&#x430;&#x436;&#x434;&#x430;&#x43D;&#x441;&#x442;&#x432;&#x43E;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="Citizenship" value="">
+                                            <span name="Citizenship" style="color: red"
+                                                class="uniqueHidden field-validation-valid"
+                                                data-valmsg-for="Citizenship" data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="Education">&#x41E;&#x431;&#x440;&#x430;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x435;
+                                                *</label>
+                                            <input type="text" placeholder="(среднее, высшее, спец.) / курсы"
+                                                name="Education" class="uniqueForm" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;&#x41E;&#x431;&#x440;&#x430;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x435;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="Education" value="">
+                                            <span name="Education" style="color: red"
+                                                class="uniqueHidden field-validation-valid" data-valmsg-for="Education"
+                                                data-valmsg-replace="true"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label for="Email">E-mail &#x430;&#x434;&#x440;&#x435;&#x441; *</label>
+                                            <input name="Email" class="uniqueForm" type="text" data-val="true"
+                                                data-val-required="&#x41F;&#x43E;&#x43B;&#x435; &#x27;E-mail &#x430;&#x434;&#x440;&#x435;&#x441;&#x27; &#x44F;&#x432;&#x43B;&#x44F;&#x435;&#x442;&#x441;&#x44F; &#x43E;&#x431;&#x44F;&#x437;&#x430;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x44B;&#x43C;."
+                                                id="Email" value="" />
+                                            <span name="Email" style="color: red"
+                                                class="uniqueHidden field-validation-valid" data-valmsg-for="Email"
+                                                data-valmsg-replace="true"></span>
+                                        </div>
+                                        <div class="c-form__item">
+                                            <label>&nbsp;</label>
+                                            <div class="c-form__checkboxes clearfix">
+                                                <div class="c-form__checkbox">
+                                                    <input class="uniqueForm" data-val="true"
+                                                        data-val-required="The &#x41D;&#x430;&#x43B;&#x438;&#x447;&#x438;&#x435; &#x43C;&#x435;&#x434;&#x438;&#x446;&#x438;&#x43D;&#x441;&#x43A;&#x43E;&#x439; &#x43A;&#x43D;&#x438;&#x436;&#x43A;&#x438; field is required."
+                                                        id="vacancy-book" name="HasMedCard" type="checkbox"
+                                                        value="true" />
+                                                    <label
+                                                        for="vacancy-book">&#x41D;&#x430;&#x43B;&#x438;&#x447;&#x438;&#x435;
+                                                        &#x43C;&#x435;&#x434;&#x438;&#x446;&#x438;&#x43D;&#x441;&#x43A;&#x43E;&#x439;
+                                                        &#x43A;&#x43D;&#x438;&#x436;&#x43A;&#x438;</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label for="WorkExperience">&#x41E;&#x431;&#x449;&#x438;&#x439;
+                                                &#x442;&#x440;&#x443;&#x434;&#x43E;&#x432;&#x43E;&#x439;
+                                                &#x441;&#x442;&#x430;&#x436; (&#x43B;&#x435;&#x442;)</label>
+                                            <textarea
+                                                placeholder="за последние 10 лет с указанием даты приема, увольнения, названия организации и занимаемой должности"
+                                                name="WorkExperience" class="uniqueForm" id="WorkExperience"></textarea>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="Additional">&#x414;&#x43E;&#x43F;&#x43E;&#x43B;&#x43D;&#x438;&#x442;&#x435;&#x43B;&#x44C;&#x43D;&#x430;&#x44F;
+                                                &#x438;&#x43D;&#x444;&#x43E;&#x440;&#x43C;&#x430;&#x446;&#x438;&#x44F;</label>
+                                            <textarea name="Additional" class="uniqueForm" id="Additional"></textarea>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="Comment">&#x41A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x439;</label>
+                                            <textarea name="Comment" class="uniqueForm" id="Comment"></textarea>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__item">
+                                            <label
+                                                for="File">&#x41F;&#x440;&#x438;&#x43A;&#x440;&#x435;&#x43F;&#x438;&#x442;&#x44C;
+                                                &#x444;&#x430;&#x439;&#x43B;</label>
+                                            <input type="file" id="anket_file" name="File">
+                                            <br />
+                                            <span id="labelError" style="color: red" class="uniqueHidden"></span>
+                                        </div>
+                                        <!--.c-form__item-->
+                                        <div class="c-form__actions">
+                                            <input type="submit" value="отправить анкету" id="anket_submit" />
+                                        </div>
+                                        <input name="HasMedCard" type="hidden" value="false" />
+                                    </form>
+
+                                </div>
+                            </div>
+                            <!--.c-column-->
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+
+        </div>
+
+        <footer id="TFooter" class="c-footer c-footer--fixed">
+            <div class="c-layout clearfix">
+                <div class="c-footer__apps clearfix">
+                    <a href="https://itunes.apple.com/ru/app/%D0%B8%D0%BC%D0%BF%D0%B5%D1%80%D0%B8%D1%8F-%D0%BF%D0%B8%D1%86%D1%86%D1%8B-%D0%B1%D0%B8%D1%88%D0%BA%D0%B5%D0%BA/id1040746585?mt=8"
+                        class="c-footer__app c-footer__app--apple-store"></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.timelysoft.virtualcardclient"
+                        class="c-footer__app c-footer__app--google-play"></a>
+                </div>
+                <div class="c-footer__social">
+                    <a href="https://www.facebook.com/mypizza.kg/"><i class="fa fa-facebook-square"
+                            aria-hidden="false"></i></a>
+                    <a href="https://www.instagram.com/mypizzakg/"><i class="fa fa-instagram"
+                            aria-hidden="true"></i></a>
+                    <a href="https://vk.com/mypizzakg"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                    <a href="https://ok.ru/mypizzakg"><i class="fa fa-odnoklassniki-square" aria-hidden="true"></i></a>
+                </div>
+                <div class="c-footer__copyright">
+                    &copy; 2002-2021 ИМПЕРИЯ ПИЦЦЫ.<br>Все права защищены
+                </div>
+            </div>
+        </footer>
+        <div class="c-mask js-mask"></div>
+    </div>
+
+
+
+    <script src="../../js/device.js%3Fv=LTaRUXK_aqqzrsXMHznj6vSCcryHf3xKoJgUIsLvDy0"></script>
+    <script src="../../plugins/modernizr/modernizr.js%3Fv=F-IljdV7bf4lH5S4axWl3de5ObgLSbEbxxU5yvSDphw"></script>
+    <script src="../../plugins/swiper/js/swiper.min.js%3Fv=xktjrXjsylce-TLUPmbhuL4nl3Db0mLlOTMKIctKm6o"></script>
+    <script
+        src="../../plugins/ResponsiveSlides/responsiveslides.min.js%3Fv=fpqXz82d8XcxrrFj_kR7bIEOUB72ZjSEg-RoIPRnXRs"></script>
+    <script src="../../js/site.min.js%3Fv=gtX8cFj09DMEpjseap1-BpykGnsMEyGdnJafrPF5b6w"></script>
+    <script src="../../js/core.js%3Fv=wBeW_UoktXGwV4w8wr9nG795qRvzikTK6QB22epupaY"></script>
+    <script src="../../js/site.js%3Fv=j--OUiqb9d-BfzK1XoqobPh-iyVzmSGzNXOeyObPcWQ"></script>
+    <script src="../../js/cartRepo.js%3Fv=E3dc6UgPUmOccFyelqlQILQ7afs3GBa27agKiKQGpZQ"></script>
+    <script src="../../js/viewModel.js%3Fv=UzrWYF3UPcVZBZC3Zuwdo-F9LPRIsMXeIYofpUocEMI"></script>
+    <script src="../../js/context.js%3Fv=CKK7tFzmPDzF5AjuhGydhXYMEaoF5XFcH3tEFnQiLzA"></script>
+    <script src="../../js/model.js%3Fv=zf8rMjypdWcHHp-Y3wMNr_pDUSczqNA6amAY-Ec5XbU"></script>
+    <script src="../../js/pizzaloader.js%3Fv=mYzC5Ld4vrffjAE8FlHE9IwQnA8DAEaT5KsbKynNjGg"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+
+
+    <script src="../../js/maskedinput.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $("#phone").mask("+996$$$$$$$$$");
+        });
+
+        $('#anket_submit').click(function (event) {
+            event.preventDefault();
+            var fsize = 0;
+            var file = $('#anket_file')[0].files[0];
+            if (window.File && window.FileReader && window.Blob) {
+                var fileInput = $('#anket_file');
+                //fileInput !== null &&
+                //    fileInput !== undefined &&
+                //    fileInput[0].files[0] !== null &&
+                if (fileInput[0].files[0] !== undefined) {
+                    if (!CheckExtension()) {
+                        return false;
+                    }
+                    fsize = file.size;
+                    if (!ValidateSize(fsize)) //do something if file size less than or equal 8 mb (8388608)
+                    {
+                        return false;
+                    }
+                }
+            }
+            var javascriptData = {};
+            var postData = $('#anket_form .uniqueForm');
+            $.each(postData,
+                function (i, datas) {
+                    if ($(datas).attr("type") == "checkbox") {
+                        var checkboxValue = $(datas).is(":checked");
+                        javascriptData[datas.name] = checkboxValue;
+                    } else {
+                        if (datas.value !== "") {
+                            javascriptData[datas.name] = datas.value;
+                        }
+                    }
+                });
+
+            //if (isForeignIp == true) {
+            //    var x = grecaptcha.getResponse();
+            //    javascriptData["ResponseRecaptcha"] = x;
+            //}
+            //var token = $('form[id="anket_form"] input[name="__RequestVerificationToken"]').val();
+            //data.append("__RequestVerificationToken", token);
+            if (fsize > 0) {
+                var prom = getBase64(file);
+                prom.then(function (base64) {
+                    javascriptData['File'] = base64;
+
+                    var jsonObjWithFile = JSON.stringify(javascriptData);
+                    sendAjaxRequest(jsonObjWithFile);
+                },
+                    function () {
+                        alert("Ошибка в сериализации файла!");
+                    });
+            } else {
+
+                var json = JSON.stringify(javascriptData);
+                sendAjaxRequest(json);
+            }
+        }
+            //else{
+            //alert("Please upgrade your browser, because your current browser lacks some new features we need!");
+            //return false;}
+        );
+
+        function CheckExtension() {
+            var allowedFiles = ["doc", "xls", "docx", "xlsx", "pdf", "wpd", "rtf", "jpg", "jpeg", "png"];
+            var fileUpload = document.getElementById("anket_file");
+            var lblError = document.getElementById("labelError");
+            var filename = fileUpload.value.toLowerCase();
+            var ext = filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+            if (Contains(allowedFiles, ext)) {
+                lblError.innerHTML = "";
+                return true;
+            }
+            lblError.innerHTML = "Допустимые расширения отправляемого файла: <b>" + allowedFiles.join(', ') + "</b>.";
+            return false;
+        }
+
+        function CLearTextArea(text) {
+            var spans = $(text);
+            $.each(spans,
+                function (i, datas) {
+                    $(datas).text("");
+                    $(datas).addClass("hidden");
+                });
+        }
+
+        function Contains(array, item) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] === item) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function ValidateSize(fsize) {
+            var lblError = document.getElementById("labelError");
+            if (fsize > 8388608) {
+                lblError.innerHTML = "";
+                lblError.innerHTML = "Размер файла не должен превышать 8mb";
+                return false;
+            }
+            lblError.innerHTML = "";
+            return true;
+        }
+
+        function getBase64(file) {
+            var reader = new FileReader();
+
+            return new Promise((resolve, reject) => {
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+
+                reader.onerror = () => {
+                    reject();
+                };
+
+                reader.readAsDataURL(file);
+            });
+        };
+
+        function sendAjaxRequest(json) {
+            $.ajax({
+                type: "POST",
+                url: "/Vacancies/VacancyItem",
+                contentType: "application/json; charset=utf-8",
+                //dataType: 'json',
+                data: json,
+                headers:
+                {
+                    "X-XSRF-TOKEN": 'CfDJ8Dr02YubNH9Pszpg7N8Q0VajusmiGAKe67KFtoTZ-BQ_sUQPL0oNhP1fQZGmMdKx7seQK7_NhEeCUHQ_hH8JB4mdrt2VZfDZFIb3Da1mzDxhU4_Lvr2GV8NW_oy4Ya2-tjsg-z7loW8eoytDI4g352Q'
+                },
+                success: function (dataSuc, status, xhr) {
+                    var tempId = (dataSuc.id);
+                    //CLearTextArea('.uniqueHidden');
+                    alert("Анкета успешно отправлена!");
+                    window.location.href = "/Vacancies/VacancyItem/" + tempId;
+                },
+                error: function (xhr, status, err) {
+                    var spans = $('.uniqueHidden');
+                    var jsonObject = xhr.responseJSON;
+                    $.each(spans,
+                        function (i, datas) {
+                            var isTrue = false;
+                            $.each(jsonObject,
+                                function (j, keys) {
+                                    if (j == $(datas).attr("name")) {
+                                        $(datas).text(keys);
+                                        $(datas).removeClass("hidden");
+                                        isTrue = true;
+                                    }
+                                });
+                            if (!isTrue) {
+                                $(datas).text("");
+                                $(datas).addClass("hidden");
+                            }
+                        });
+                    //alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        //Удалить fixed- footer в случаи не главной страницы
+        $(document).ready(function () {
+            var t = document.getElementById("Tname");
+            if ("Главная страница | Империя пиццы" != t.text) {
+                document.getElementById("TFooter").classList.remove('c-footer--fixed');
+            }
+        });
+
+        (function (w, d, s, u) {
+            w.RocketChat = function (c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
+            var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
+            j.async = true; j.src = 'https://chat.mypizza.kg/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js?_=201702160944';
+            h.parentNode.insertBefore(j, h);
+        })(window, document, 'script', 'https://chat.mypizza.kg/livechat');
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+﻿function MenuItemModel(number, name, isCoupon, isDelivery, picturePath, price, description) {
+    this.Number = number;
+    this.Name = name;
+    this.IsCoupon = isCoupon;
+    this.IsDelivery = isDelivery;
+    this.PicturePath = picturePath;
+    this.Price = price;
+    this.Description = description;
+}

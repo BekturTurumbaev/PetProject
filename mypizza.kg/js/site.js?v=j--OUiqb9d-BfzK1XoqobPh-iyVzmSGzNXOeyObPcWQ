@@ -1,0 +1,72 @@
+﻿// Write your Javascript code.
+function ChangeToSlide(number) {
+    var next = $("#slide" + number).first();
+    $(".slideShowContainer:visible").fadeOut();
+    $(".slideShowBox").css("background-color", "#b4b4b4");
+    $("#slideShowPage" + number).css("background-color", "#ff0000");
+    next.fadeIn();
+};
+
+function AutoRoll() {
+    var slidesCount = $(".slideShowContainer").length;
+    var counter = 0;
+    ChangeToSlide(0);
+    var timerId = setInterval(function () {
+        counter++;
+        if (counter === slidesCount) counter = 0;
+        ChangeToSlide(counter);
+    }, 5000);
+    return timerId;
+}
+
+$(document).ready(function () {
+    $(".slider").mCustomScrollbar({
+        setWidth: '1110px',
+        setHeight: '150px',
+        theme: "dark",
+        axis: 'x',
+        scrollButtons: {
+            enable: false
+        },
+        advanced: { extraDraggableSelectors: ".mCSB_buttonLeft" }
+    });
+    if ($(".content.container").height() <= $(window).height() - 190) {
+        $('.footer').css({
+            'position': 'absolute'
+        });
+    };
+    $('.mCustomScrollBox').before('<i class="btnLeft">&#8249;</i>');
+    $('.mCustomScrollBox').after('<i class="btnRight">&#8250;</i>');
+    var ScrollRight;
+    $('.btnRight').mouseover(function () {
+        ScrollRight = setInterval(function () {
+            $(".slider").mCustomScrollbar("scrollTo", "-=15", { scrollInertia: 0 })
+        }, 1);
+    });
+    $('.btnRight').mouseout(function () {
+        clearInterval(ScrollRight);
+    });
+
+    var ScrollLeft;
+    $('.btnLeft').mouseover(function () {
+        ScrollLeft = setInterval(function () {
+            $(".slider").mCustomScrollbar("scrollTo", "+=15", { scrollInertia: 0 })
+        }, 1);
+    });
+    $('.btnLeft').mouseout(function () {
+        clearInterval(ScrollLeft);
+    });
+    if ($(window).width() > 640) {
+        $('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1.0').appendTo('head')
+    }
+    else {
+        console.log("less");
+        $('meta').attr('name', 'viewport').attr('content', 'width=device-width, initial-scale=1.0').appendTo('head')
+    };
+    $('.content-my').css({ 'min-height': ($('.cart-list-1').height() + $('.cart-list-2').height()) + $('.wrapper').height() });
+});
+
+function HideSlideshow(timerId) {
+    clearInterval(timerId);
+    $(".inner").fadeOut();
+}

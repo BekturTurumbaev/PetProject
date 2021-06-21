@@ -1,0 +1,382 @@
+var $ = jQuery;
+/*var app = {
+	top: false,
+	body: '',
+	html:'',
+	fix: false,
+	init: function() {
+		app.body = $("body");
+		app.html = $("html");
+	}
+}
+
+$(window).ready(app.init);
+*/
+
+$(document).ready();
+
+/* Fancybox vacancy */
+$(function () {
+    //$('.js-fancybox-set a').attr('rel','set').fancybox();
+});
+
+
+$(function () {
+    var root = $('body');
+    if (device.mobile() == true) {
+        $('.js-actions').appendTo('.c-site');
+    }
+
+    $('.js-hamburger').click(function () {
+        root.toggleClass('is-menu');
+    });
+
+    //$('.js-phones__trigger').click(function () {
+    //    root.toggleClass('is-phones');
+    //});
+    $(document).on('click', ".js-phones__trigger", function () {
+        root.toggleClass('is-phones');
+    });
+    $('.js-mask').click(function () {
+        root.removeClass('is-menu').removeClass('is-phones').removeClass('is-modal');
+    });
+
+    $(document).on('click', ".js-popup__trigger", function () {       
+        root.toggleClass('is-popup');
+    });
+    
+    //$('.js-popup__trigger').click(function () {
+    //    root.toggleClass('is-popup');
+    //});
+
+
+
+    $(document).on('click', ".js-modal__trigger", function () {
+        root.toggleClass('is-modal');
+    });
+
+    //$('.js-modal__trigger').click(function () {
+    //    root.toggleClass('is-modal');
+    //});
+
+});
+
+$(function () {
+    var fix = false;
+    var root = $('body');
+
+    $(window).scroll(function () {
+        if (window.pageYOffset > 150) {
+            if (!fix) {
+                root.addClass("is-sticky");
+                fix = true;
+            }
+        } else {
+            if (fix) {
+                root.removeClass("is-sticky");
+                fix = false;
+            }
+        }
+    });
+});
+
+/* Sidebar sticky position */
+$(function () {
+    if ($('.js-sidebar').size() > 0) {
+        var root = $('body');
+        var sb = $('.js-sidebar');
+        var sbWidth = sb.width();
+        $('.c-cart').width(sbWidth);
+
+        var pos = $('.js-sidebar').offset().top - 170; 
+        $(window).scroll(function () {
+            if (window.pageYOffset > pos) {
+                root.addClass("is-sidebar--sticky");
+            } else {
+                root.removeClass("is-sidebar--sticky");
+            }
+        });
+
+        $(window).resize(function (sb) {
+            var sbWidth = sb.width;
+            $('.c-cart').width(sbWidth);
+        });
+    }
+});
+
+/* Hero carousel */
+$(function () {
+    if ($('.js-hero').size() > 0) {
+        $(".js-hero").responsiveSlides({
+            //maxwidth: 800,
+            speed: 800,
+            pager: true,
+            manualControls: '.js-hero__pagination',
+        });
+    }
+});
+/*$(function() {
+	var heroCarousel = new Swiper('.js-hero', {
+		slideClass: 'c-hero__item',
+		slideActiveClass:'c-hero__item--active',
+		pagination: '.js-hero__pagination',
+		paginationClickable: true,
+		//speed: 300,
+		autoplay: 4000,
+		//grabCursor: true,
+		slidesPerView: 'auto',
+        centeredSlides: true,
+		effect: 'fade',
+	});
+});*/
+
+/* Categories carousel */
+$(function () {
+    var heroCarousel = new Swiper('.js-carousel', {
+        slideClass: 'c-carousel__item',
+        slideActiveClass: 'c-carousel__item--active',
+        speed: 400,
+        grabCursor: true,
+        preventClicks: false,
+        preventClicksPropagation: false,
+        nextButton: '.js-carousel__next',
+        prevButton: '.js-carousel__prev',
+        slidesPerView: 'auto',
+        scrollbar: '.js-carousel__scrollbar',
+        scrollbarHide: false,
+        scrollbarDraggable: true,
+        keyboardControl: true,
+        mousewheelControl: true,
+        mousewheel: true,
+        freeMode: true,
+        freeModeSticky: true,
+
+
+
+});
+});
+
+/* Form Tabs */
+$(function () {
+    $('.js-tabs').click(function () {
+        var id = $(this).val();
+        $('#tab-' + id).closest('.c-tabs').find('.c-tab').removeClass('c-tab--visible');
+        $('#tab-' + id).addClass('c-tab--visible');
+    });
+});
+
+/* Form Tabs */
+$(function () {
+    if ($('.js-select').size() > 0) {
+        $('.js-select').editableSelect({ effects: 'fade' });
+    }
+});
+
+/* City input autocomplete */
+/*
+$( function() {
+	if($('.js-autocomplete').size()>0) {
+		var cityList = [
+		  "Бищкек",
+		  "Кара-Балта",
+		];
+		
+		var streetList = [
+		  "ул. Камская, 40",
+		  "ул. Сыдыкова, 250",
+		  "пр. Чуй, 43 ",
+		  "12 мкр., 13/1",
+		  "пр. Чуй, 114",
+		  "Вефа-Центр, 3 этаж ",
+		  "ул. Ахунбаева, 173/1",
+		  "ул. Фрунзе, 35",
+		  "ул. Ауэзова, 11",
+		  "ул. Киевская 148",
+		  "ул. Кулиева 2Б",
+		  "ул. Юнусалиева 171/1",
+		  "ул. Бейшеналиева, 9 ",
+		  "ул. Токтогула, 93",
+		];
+		
+		var paymentList = [
+		  "Наличные",
+		  "DemirBank",
+		];
+
+		$( "#js-autocomplete--city" ).autocomplete({
+		  source: cityList
+		});
+		
+		$( "#js-autocomplete--address" ).autocomplete({
+		  source: streetList
+		});
+		
+		$( "#js-autocomplete--address-rest" ).autocomplete({
+		  source: streetList
+		});
+		
+		$( "#js-autocomplete--payment" ).autocomplete({
+		  source: paymentList
+		});
+	}
+});
+*/
+
+
+
+
+
+/* Cart spinner */
+
+$(function () {
+    var field = $('.js-cart__counter');
+    var disabledClass = 'c-menu--disabled';
+    $('.js-roulette').each(function () {
+        var item = $(this);
+        var field = item.find('.js-roulette__count');
+        var min = field.attr('data-min');
+        var max = field.attr('data-max');
+        var currentVal = field.val();
+        item.find('.js-roulette__plus').text(parseInt(currentVal) + 1);
+        if (currentVal != 1) {
+            item.find('.js-roulette__minus').text(parseInt(currentVal) - 1);
+        } else {
+            item.find('.js-roulette__minus').addClass(disabledClass);
+        }
+    });
+
+    /*$('.js-product__counter').hover(function(){
+		$(this).addClass('is-spinner');
+	}, function(){
+		$(this).removeClass('is-spinner');
+	});*/
+
+    $('.js-roulette__plus').click(function () {
+        var plusBtn = $(this);
+        var roulette = plusBtn.closest('.js-roulette');
+        var field = roulette.find('.js-roulette__count');
+        var minusBtn = roulette.find('.js-roulette__minus');
+        minusBtn.removeClass(disabledClass);
+        var maxCount = parseInt(field.attr('data-max'));
+        var curCount = parseInt(field.val());
+        if (maxCount > curCount) {
+            field.val(curCount + 1);
+            if (field.val() == maxCount) {
+                roulette.addClass('is-message');
+                plusBtn.addClass(disabledClass);
+            } else {
+                plusBtn.removeClass(disabledClass);
+            }
+            plusBtn.text(curCount + 2);
+            minusBtn.text(curCount);
+        }
+    });
+
+    $('.js-roulette__minus').click(function () {
+        var minusBtn = $(this);
+        var roulette = minusBtn.closest('.js-roulette');
+        roulette.removeClass('is-message');
+        var field = roulette.find('.js-roulette__count');
+        var plusBtn = roulette.find('.js-roulette__plus');
+        plusBtn.removeClass(disabledClass);
+        var minCount = 1;
+        var curCount = parseInt(field.val());
+        var maxCount = parseInt(field.attr('data-max'));
+        if (curCount > minCount) {
+            field.val(curCount - 1);
+            if (field.val() == minCount) {
+                roulette.removeClass('is-message');
+                minusBtn.addClass(disabledClass);
+            } else {
+                minusBtn.removeClass(disabledClass);
+            }
+            minusBtn.text(curCount - 2);
+            plusBtn.text(curCount);
+        }
+    });
+
+    $('.js-roulette__count').change(function () {
+        var field = $(this);
+        var roulette = field.closest('.js-roulette');
+        var newVal = parseInt(field.val());
+        var maxCount = parseInt(field.attr('data-max'));
+        var plusBtn = field.closest('.js-roulette').find('.js-roulette__plus');
+        var minusBtn = field.closest('.js-roulette').find('.js-roulette__minus');
+        if (newVal > 0 & newVal <= maxCount) {
+            plusBtn.text(newVal + 1);
+            minusBtn.text(newVal - 1);
+            roulette.removeClass('is-message');
+        } else {
+            roulette.addClass('is-message');
+            $(this).val(maxCount);
+            $(this).closest('.c-roulette').find('.js-roulette__plus').addClass(disabledClass).text(maxCount + 1);
+            $(this).closest('.c-roulette').find('.js-roulette__minus').removeClass(disabledClass).text(maxCount - 1);
+        }
+    });
+
+    $('.js-roulette__count').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1) {
+            // Allow: Ctrl+A
+            //	            (e.keyCode == 65 && e.ctrlKey === true) || 
+            // Allow: home, end, left, right
+            //		(e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+
+    });
+
+    $('.js-roulette__count').keyup(function (e) {
+
+        var field = $(this);
+        var roulette = field.closest('.js-roulette');
+        var newVal = parseInt(field.val());
+        var maxCount = parseInt(field.attr('data-max'));
+        var plusBtn = field.closest('.js-roulette').find('.js-roulette__plus');
+        var minusBtn = field.closest('.js-roulette').find('.js-roulette__minus');
+        if (newVal > 0 & newVal <= maxCount) {
+            plusBtn.text(newVal + 1);
+            minusBtn.text(newVal - 1);
+            roulette.removeClass('is-message');
+        } else {
+            roulette.addClass('is-message');
+            if (newVal > 1) {
+                $(this).val(maxCount);
+                $(this).closest('.js-roulette').find('.js-roulette__plus').addClass(disabledClass).text(maxCount + 1);
+                $(this).closest('.js-roulette').find('.js-roulette__minus').removeClass(disabledClass).text(maxCount - 1);
+            }
+            else {
+                $(this).val(1);
+                $(this).closest('.js-roulette').find('.js-roulette__plus').removeClass(disabledClass).text(2);
+                $(this).closest('.js-roulette').find('.js-roulette__minus').addClass(disabledClass).text(0);
+            }
+
+        }
+
+        /* newVal = parseInt(field.val());
+        var nid = $(this).closest('.c-control').find('.js-add-form__submit').data('nid');
+        var href = '/ajax/cart/add/' + nid + '/' + newVal;
+//        $(this).closest('.c-control').find('.js-add-form__submit a').attr('href', href);
+
+        clearInterval(timerID);
+        var timerID = setTimeout(
+        	function() {
+//        		field.closest('.c-control').find('.js-add-form__submit a').click();
+//        		console.log(field.closest('.c-control').find('.js-add-form__submit a').attr('href'));
+
+        		var settings = {url : href};
+				var ajax = new Drupal.ajax(false, false, settings);
+				ajax.eventResponse(ajax, {});
+
+			},
+			500
+		); */
+
+    });
+
+});

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon icon" href="../../img/logo.png" />
+    <title id="Tname">&#x41C;&#x435;&#x43D;&#x44E; | Империя пиццы</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" id="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+    <meta name="HandheldFriendly" content="true">
+
+
+
+    <link rel="stylesheet" href="../../css/reset.css%3Fv=WSyRWvPZGf_m-86d4f_Ihbt3CXmqvHYHSkWJf6o0euU.css">
+    <link rel="stylesheet"
+        href="../../fonts/font-awesome-4.7.0/fonts/font-awesome.min.css%3Fv=gg4WnOJIJAZtmXP9S2Vhqunc1tvvZDXakF1aHWSCmXw.css" />
+    <link rel="stylesheet"
+        href="../../plugins/swiper/css/swiper.min.css%3Fv=0eq7ypooFiUey_mtgx1ZnlnGoEO0S7jEuS3wHyaXRsQ.css" />
+    <link rel="stylesheet"
+        href="../../plugins/editable-select/jquery-editable-select.min.css%3Fv=x5-B87XNfhUkwrYryaWGt-TQ9P1AxUe8P4R6xAyfU7E.css" />
+    <link rel="stylesheet" href="../../css/karma.css%3Fv=YAZqU5wk0FTSsxTCNqrgoC7q9-L4QBZ4zA0bOZzgAy8.css">
+    <link rel="stylesheet" href="../../css/mobile.css%3Fv=t7i78DFeLumkaDltne6UCyGClbEKkU3NqucFYXyIeYM.css">
+    <link rel="stylesheet" href="../../js/select2/select2.css%3Fv=Nf34vgKBw0AgQv6PtcfcEkE02mn9G5cA98BsHT84Bro.css">
+
+
+    <script type="text/javascript" src="../../plugins/swiper/js/swiper.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="../../plugins/editable-select/jquery-editable-select.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=cyrillic" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="loaderId" class="pizza_loader_none">
+        <canvas id="loaderCanvasId" class="pizza"></canvas>
+    </div>
+    <div class="c-site">
+        <header class="c-header">
+            <div class="c-layout clearfix">
+                <div class="c-header__logos clearfix c-wrapper">
+                    <div class="c-header__logo">
+                        <a href="../../index.html">
+                            <img src="../../img/logo--pizza.png" alt="" />
+                        </a>
+                    </div>
+                    <div class="c-header__logo o-glow">
+                        <a href="../../index.html">
+                            <img src="../../img/logo--sushi.png" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="actions-stock">
+                    <div class="c-actions js-actions c-wrapp">
+
+
+                        <nav class="c-header__nav js-header__nav">
+                            <ul class="menu">
+                                <li><a href="../../index.html">Меню</a></li>
+                                <li>
+                                    <a href="../../Shares.html">Акции</a>
+                                    <ul id="NavigationPartial_AB" data-bind="foreach: observableArray">
+                                        <li><a data-bind="attr:{'href': '/Shares/ShareItem/'+id()},text:header()">Нету
+                                                акций</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="../../Vacancies.html">Вакансии</a></li>
+                                <li><a href="../../Company/About.html">о Компании</a>
+                                    <ul>
+                                        <li><a href="../../Company/AddressPage.html">Контакты и адреса</a></li>
+                                        <li><a href="../../Company/DeliveryMaps.html">Карта и зоны доставки</a></li>
+                                        <li><a href="../../Company/DeliveryRules.html">Правила</a></li>
+                                        <li><a href="../../Company/Instructions.html">Инструкции</a></li>
+                                        <li><a href="../../Company/FeedBack.html">Обратная связь</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <script>
+                            function Promotions(promotions) {
+                                var self = this;
+                                self.observableArray = ko.observableArray();
+                                for (var i = 0; i < promotions.length; ++i) {
+                                    self.observableArray.push(new Promotion(promotions[i]));
+                                }
+                            }
+
+                            function Promotion(promotion) {
+                                var self = this;
+                                self.id = ko.observable(promotion.id);
+                                self.header = ko.observable(promotion.header);
+                                self.backgroundImage = ko.observable(promotion.backgroundImage);
+                            }
+
+                            $.ajax({
+                                type: "GET",
+                                url: "/News/GetNewsActionResult",
+                                data: {},
+                                contentType: "application/json;charset=utf-8",
+                                dataType: "json",
+                                success: function (result) {
+                                    ko.applyBindings(new Promotions(result), document.getElementById("NavigationPartial_AB"));
+                                },
+                                error: function (response) {
+                                    console.log("error");
+                                }
+                            });
+                        </script>
+
+
+                        <div class="c-header__phones">
+                            <div class="c-phones__list">
+                                <a href="tel:0312510707">0 (312) 51-07-07</a><br>
+                                <a href="tel:0551510707">0 (551) 51-07-07</a><br>
+                                <a href="tel:0772510707">0 (772) 51-07-07</a><br>
+                                <a href="tel:0704510707">0 (704) 51-07-07</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="c-header__cart c-wrapper">
+                    <a href="../../Cart.html">Корзина</a>
+                </div>
+                <div class="c-nav--mobile c-wrapper">
+                    <div class="c-hamburger js-hamburger"></div>
+                    <div class="c-phones__trigger js-phones__trigger"></div>
+                </div>
+            </div>
+        </header>
+        <div class="content container">
+            <link rel="stylesheet"
+                href="../../plugins/slick-slider/slick.css%3Fv=8LcixIxSCCzXcmFXTiKlJR_jfqSykbFEETQUW6ubIGM.css">
+            <script
+                src="../../plugins/slick-slider/slick.min.js%3Fv=4aUsCgb6n2XgFbAufsRj_WISEanSrkS2ZgWXkA6Sf7s"></script>
+            <div class="c-wrapper">
+                <div class="c-categories">
+
+                    <div class="c-categories__bar">
+                        <div class="c-layout">
+                            <div class="c-carousel__arrow c-carousel__arrow--prev js-carousel__prev"></div>
+                            <div class="c-carousel__arrow c-carousel__arrow--next js-carousel__next"></div>
+                            <div class="c-carousel js-carousel swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4354.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/144.jpg" alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x417;&#x430;&#x432;&#x442;&#x440;&#x430;&#x43A;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4355.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x420;&#x430;&#x439;&#x441;&#x43A;&#x438;&#x435;-&#x433;&#x440;&#x435;&#x437;&#x44B;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x41F;&#x438;&#x446;&#x446;&#x430;
+                                                    30&#x441;&#x43C;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4372.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x43E;&#x445;&#x43E;&#x442;&#x43D;&#x438;&#x447;&#x44C;&#x44F;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x41F;&#x438;&#x446;&#x446;&#x430;
+                                                    40&#x441;&#x43C;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4364.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x421;&#x443;&#x441;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x421;&#x443;&#x441;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4365.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x420;&#x43E;&#x43B;&#x44B;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x420;&#x43E;&#x43B;&#x43B;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4366.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x421;&#x435;&#x442;&#x44B;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x421;&#x435;&#x442;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4358.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/16.jpg" alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x421;&#x430;&#x43B;&#x430;&#x442;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4356.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x444;&#x438;&#x440;&#x43C;&#x435;&#x43D;&#x43D;&#x44B;&#x435; &#x43A;&#x43E;&#x43B;&#x431;&#x430;&#x441;&#x43A;&#x438; &#x433;&#x43E;&#x432;&#x44F;&#x434;&#x438;&#x43D;&#x430;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x417;&#x430;&#x43A;&#x443;&#x441;&#x43A;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4359.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41E;&#x441;&#x442;&#x440;&#x44B;&#x439; &#x43C;&#x43E;&#x440;&#x441;&#x43A;&#x43E;&#x439; &#x441;&#x443;&#x43F;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x421;&#x443;&#x43F;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4361.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x422;&#x435;&#x43B;&#x44F;&#x442;&#x438;&#x43D;&#x430; &#x43F;&#x43E;&#x434; &#x441;&#x43B;&#x430;&#x434;&#x43A;&#x43E;-&#x43E;&#x441;&#x442;&#x440;&#x44B;&#x43C; &#x441;&#x43E;&#x443;&#x441;&#x43E;&#x43C;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x413;&#x43E;&#x440;&#x44F;&#x447;&#x438;&#x435;
+                                                    &#x431;&#x43B;&#x44E;&#x434;&#x430;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4362.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x413;&#x430;&#x440;&#x43D;&#x438;&#x440; &#x41A;&#x430;&#x440;&#x442;&#x43E;&#x444;&#x435;&#x43B;&#x44C; &#x43F;&#x43E;-&#x434;&#x435;&#x440;&#x435;&#x432;&#x435;&#x43D;&#x441;&#x43A;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x413;&#x430;&#x440;&#x43D;&#x438;&#x440;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4373.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x427;&#x435;&#x441;&#x43D;&#x43E;&#x447;&#x43D;&#x44B;&#x435; &#x433;&#x440;&#x435;&#x43D;&#x43A;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x425;&#x43B;&#x435;&#x431;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4363.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x43A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x44F; &#x441;&#x43E;&#x443;&#x441;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x421;&#x43E;&#x443;&#x441;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4371.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/kruassan_s_chokoladom.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x414;&#x435;&#x441;&#x435;&#x440;&#x442;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4375.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x438; &#x425;&#x43E;&#x43B;&#x43E;&#x434;&#x43D;&#x44B;&#x435; &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x425;&#x43E;&#x43B;&#x43E;&#x434;&#x43D;&#x44B;&#x435;
+                                                    &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4370.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x433;&#x43E;&#x440;&#x44F;&#x447;&#x438;&#x435; &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x413;&#x43E;&#x440;&#x44F;&#x447;&#x438;&#x435;
+                                                    &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4367.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41C;&#x43E;&#x43B;&#x43E;&#x447;&#x43D;&#x44B;&#x439; &#x43A;&#x43E;&#x43A;&#x442;&#x435;&#x439;&#x43B;&#x44C; &#x412;&#x438;&#x43B;&#x43B;&#x438; &#x412;&#x43E;&#x43D;&#x43A;&#x430; &#x424;&#x440;&#x443;&#x43A;&#x442;&#x43E;&#x432;&#x44B;&#x439;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x411;&#x435;&#x437;&#x430;&#x43B;&#x43A;&#x43E;&#x433;&#x43E;&#x43B;&#x44C;&#x43D;&#x44B;&#x435;
+                                                    &#x43A;&#x43E;&#x43A;&#x442;&#x435;&#x439;&#x43B;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4368.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x410;&#x43B;&#x430;&#x44F; &#x440;&#x43E;&#x437;&#x430;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x410;&#x43B;&#x43A;&#x43E;&#x433;&#x43E;&#x43B;&#x44C;&#x43D;&#x44B;&#x435;
+                                                    &#x43A;&#x43E;&#x43A;&#x442;&#x435;&#x439;&#x43B;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4376.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41F;&#x438;&#x432;&#x43E;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x41F;&#x438;&#x432;&#x43E;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4381.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x438; &#x412;&#x438;&#x43D;&#x43D;&#x430;&#x44F; &#x43A;&#x430;&#x440;&#x442;&#x430;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x412;&#x438;&#x43D;&#x43E;
+                                                    &#x428;&#x430;&#x43C;&#x43F;&#x430;&#x43D;&#x441;&#x43A;&#x43E;&#x435;
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4374.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x421;&#x438;&#x433;&#x430;&#x440;&#x435;&#x442;&#x44B;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x421;&#x438;&#x433;&#x430;&#x440;&#x435;&#x442;&#x44B;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4379.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x44F; &#x411;&#x430;&#x43D;&#x43A;&#x435;&#x442;&#x43D;&#x43E;&#x435; &#x43C;&#x435;&#x43D;&#x44E;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x411;&#x430;&#x43D;&#x43A;&#x435;&#x442;&#x43D;&#x43E;&#x435;
+                                                    &#x43C;&#x435;&#x43D;&#x44E; (&#x437;&#x430;&#x43A;&#x430;&#x437;
+                                                    &#x437;&#x430; 24 &#x447;&#x430;&#x441;&#x430;)</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4382.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x438; &#x410;&#x43B;&#x43A;&#x43E;&#x433;&#x43E;&#x43B;&#x44C;&#x43D;&#x44B;&#x435; &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">
+                                                    &#x42D;&#x43B;&#x438;&#x442;&#x43D;&#x44B;&#x435;
+                                                    &#x441;&#x43F;&#x438;&#x440;&#x442;&#x43D;&#x44B;&#x435;
+                                                    &#x43D;&#x430;&#x43F;&#x438;&#x442;&#x43A;&#x438;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                    <div class="c-carousel__item swiper-slide">
+                                        <a class="" href="4383.html">
+                                            <div class="c-carousel__media">
+                                                <img src="https://mobile.mypizza.kg/jpg/&#x41A;&#x430;&#x442;&#x435;&#x433;&#x43E;&#x440;&#x438;&#x438; &#x412;&#x43E;&#x434;&#x43A;&#x430;.jpg"
+                                                    alt="" />
+                                            </div>
+                                            <div class="c-carousel__meta">
+                                                <div class="c-carousel__title">&#x412;&#x43E;&#x434;&#x43A;&#x430;</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!--.c-carousel__item-->
+                                </div>
+                            </div>
+                            <div class="c-carousel__scrollbar swiper-scrollbar js-carousel__scrollbar"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <main class="c-main">
+                    <div class="c-layout clearfix">
+                        <div id="CategoryItems_AB" class="c-content">
+                            <h1 class="c-main__title">&#x41F;&#x438;&#x446;&#x446;&#x430; 40&#x441;&#x43C;</h1>
+
+                            <div class="c-sort">
+                                <div class="c-sort__content clearfix">
+                                    <span class="c-sort__title">Сортировать по:</span>
+
+                                    <select data-bind="options: $root.Filters(),
+                                                        optionsText: 'Name',
+                                                        value: $root.selectedFilter"></select>
+                                </div>
+                            </div>
+
+                            <div class="c-menu__list clearfix" data-bind="foreach: sortedItems">
+                                <!-- MENU ITEMS START --->
+                                <div class="c-menu__item">
+                                    <div class="c-menu__content clearfix">
+                                        <div class="c-menu__media">
+                                            <a href="4372.html#" class="js-popup__trigger c-image-placeholder">
+                                                <img data-bind="click: $root.setCurrentItem.bind($data) ,attr: {src: PicturePath}"
+                                                    alt="#" />
+                                            </a>
+                                        </div>
+                                        <div class="c-menu__meta">
+                                            <div class="c-menu__title c-menu__title--new">
+                                                <a href="4372.html#" class="js-popup__trigger"
+                                                    data-bind="text: Name,click:$root.setCurrentItem.bind($data)">
+                                                </a>
+                                            </div>
+                                            <div class="c-menu__text">
+                                                <a href="4372.html#" class="js-popup__trigger"
+                                                    data-bind="click:$root.setCurrentItem.bind($data),attr: {id: Number}">Подробнее...</a>
+                                            </div>
+                                            <!-- ko if: !hasChilds() -->
+                                            <div class="c-menu__price">
+                                                <span><span data-bind="text: Price"></span> c.</span>
+                                            </div>
+                                            <div class="c-menu__actions js-roulette clearfix">
+                                                <span class="c-menu__arrow c-menu__arrow--minus btn-decrease"
+                                                    data-bind="attr: {dataId: Number}, css:{ 'c-menu--disabled': TotalCount() < 2 }"
+                                                    title="уменьшить"></span>
+                                                <span class="c-menu__count">
+                                                    <form action="4372.html">
+                                                        <input type="text"
+                                                            data-bind="value: TotalCount, valueUpdate:'input' , event: { keypress:isNumberKey, change: function(event) { if(isNumberKey(event)) $root.setInputCount(Number(),TotalCount());}}" />
+                                                    </form>
+                                                </span>
+                                                <span data-bind="attr: {dataId: Number}"
+                                                    class="c-menu__arrow c-menu__arrow--plus  btn-increase"
+                                                    title="увеличить"></span>
+                                            </div>
+                                            <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.c-menu__item-->
+                                <!-- MENU ITEMS END --->
+                            </div>
+                        </div>
+                        <!-- Корзина --->
+                        <aside class="c-sidebar js-sidebar">
+                            <div class="c-cart">
+                                <div class="c-cart__inner" id="basket">
+                                    <h2 class="c-cart__title">Корзина</h2>
+                                    <div class="c-cart__list">
+                                        <!-- ko template: { name: 'cartItemsTemplate', foreach: cartItems, as: 'cartItem'} -->
+                                        <!-- /ko -->
+                                        <!-- ko template: { name: 'cartItemsTemplate2', foreach: comboCartItems, as: 'comboCartItem'} -->
+                                        <!-- /ko -->
+                                    </div>
+                                    <div class="c-cart__actions">
+                                        <div class="c-cart__total clearfix">
+                                            Сумма заказа:<span class="c-cart__sum" id="#">0</span>
+                                        </div>
+                                        <a class="c-button" href="../../Cart.html">Оформить заказ</a>
+                                    </div>
+                                </div>
+                                <!--.c-cart__inner-->
+                            </div>
+                        </aside>
+                        <!-- Корзина --->
+                    </div>
+                </main>
+            </div>
+            <div id="popupId">
+                <!-- ko if: $root.IsSingle() && $root.AccessableSingle() -->
+                <div class="c-popup js-popup">
+                    <div class="c-popup__mask js-popup__trigger"></div>
+
+                    <div class="c-popup__content">
+                        <div class="c-popup__close js-popup__trigger"></div>
+                        <div class="c-popup__item clearfix" id="modal">
+
+                            <div class="c-popup__media">
+                                <img data-bind="attr: {src: $root.CurrentItem().PicturePath()}" alt="" />
+                            </div>
+                            <div class="c-popup__meta">
+                                <div class="c-popup__title" data-bind="text: $root.CurrentItem().Name()"></div>
+                                <div class="c-popup__text" data-bind="text: $root.CurrentItem().Item.Description"
+                                    style="white-space: pre-line"></div>
+
+                                <div class="c-modificators" data-bind="foreach: $root.CurrentItem().ModifierGroups">
+                                    <div data-bind="if: Modifiers().length>0">
+                                        <div class="c-modificators__title">
+                                            К этому блюду Вы можете выбрать:
+                                        </div>
+                                        <div data-bind="if: MinimumSelected==0">
+                                            <div data-bind="foreach: Modifiers">
+                                                <div class="c-modificators__item clearfix">
+                                                    <div class="c-modificators__form-item">
+                                                        <form action="4372.html">
+                                                            <div class="c-form__checkbox"
+                                                                data-bind="click:function (){$parent.setModifiers($data)}">
+                                                                <input type="checkbox" data-bind="checked:IsChecked">
+                                                                <label data-bind="text: Name"></label>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div data-bind="if: MinimumSelected > 0 && MaximumSelected>0">
+                                            <div data-bind="foreach: Modifiers">
+                                                <div class="c-modificators__item clearfix">
+                                                    <div class="c-modificators__form-item"
+                                                        data-bind="click:function (){$parent.setModifier($data)}">
+                                                        <div class="c-form__radio">
+                                                            <input type="radio"
+                                                                data-bind="checked:$parent.IsSelected,checkedValue:Code">
+                                                            <label data-bind="text: Name"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--.modificators-->
+
+                                <div class="c-popup__weight"
+                                    data-bind="text:'Вес/weight: '+$root.CurrentItem().Weight()">***</div>
+                                <div class="c-popup__price">
+                                    <span><span data-bind="text: $root.CurrentItem().Price()"></span> сом</span>
+                                </div>
+                                <div class="c-menu__actions js-roulette clearfix">
+                                    <span class="c-menu__arrow c-menu__arrow--minus" title="уменьшить"
+                                        data-bind="click: $root.CurrentItem().decrementZCounter, css:{ 'c-menu--disabled': $root.CurrentItem().ZCount() < 2 }"></span>
+                                    <span class="c-menu__count">
+                                        <form action="4372.html">
+                                            <input type="text" disabled data-min="0" data-max="10"
+                                                data-bind="value: $root.CurrentItem().ZCount()" />
+                                        </form>
+                                    </span>
+                                    <span class="c-menu__arrow c-menu__arrow--plus" title="увеличить"
+                                        data-bind="click: $root.CurrentItem().incrementZCounter"></span>
+                                    <a href="4372.html#" onclick="return false"
+                                        class="c-menu__order c-button js-cartItem-addToBasket js-popup__trigger"
+                                        data-bind="attr:{dataId: $root.CurrentItem().Number(), dataCount: $root.CurrentItem().ZCount()}">В
+                                        корзину</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--.c-popup-->
+                <!-- /ko -->
+                <!-- ko if: !$root.IsSingle() && $root.AccessableBoth() -->
+                <div class="c-popup js-popup c-popup--combo">
+                    <div class="c-popup__mask js-popup__trigger"></div>
+                    <div class="c-popup__content c-popup__content--combo">
+                        <div class="c-popup__close js-popup__trigger"></div>
+                        <div class="c-popup__content--wrap">
+                            <div class="c-popup__item c-popup__item--l clearfix">
+                                <div class="c-popup__slider--l">
+                                    <!-- ko foreach: $root.HalfItemsL() -->
+                                    <div class="c-popup__media">
+                                        <div class="c-popup__img-wrap">
+                                            <img data-bind="attr: {src: Item.PicturePath + '_L.jpg'}" alt="" />
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <div class="c-popup__meta">
+                                    <div class="c-popup__title" data-bind="text: $root.LeftItem().Item.Name"></div>
+                                    <div class="c-popup__text" data-bind="text: $root.LeftItem().Item.Description"
+                                        style="white-space: pre-line"></div>
+                                    <div class="c-modificators" data-bind="foreach: $root.LeftItem().ModifierGroups">
+                                        <div data-bind="if: Modifiers().length>0">
+                                            <div class="c-modificators__title">
+                                                К этому блюду Вы можете выбрать:
+                                            </div>
+                                            <div data-bind="if: MinimumSelected==0">
+                                                <div data-bind="foreach: Modifiers">
+                                                    <div class="c-modificators__item clearfix">
+                                                        <div class="c-modificators__form-item">
+                                                            <form action="4372.html">
+                                                                <div class="c-form__checkbox"
+                                                                    data-bind="click:function (){$parent.setModifiers($data)}">
+                                                                    <input type="checkbox"
+                                                                        data-bind="checked:IsChecked">
+                                                                    <label data-bind="text: Name"></label>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div data-bind="if: MinimumSelected > 0 && MaximumSelected>0">
+                                                <div data-bind="foreach: Modifiers">
+                                                    <div class="c-modificators__item clearfix">
+                                                        <div class="c-modificators__form-item"
+                                                            data-bind="click:function (){$parent.setModifier($data)}">
+                                                            <div class="c-form__radio">
+                                                                <input type="radio"
+                                                                    data-bind="checked:$parent.IsSelected,checkedValue:Code">
+                                                                <label data-bind="text: Name"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--.modificators-->
+                                    <div class="c-popup__weight"
+                                        data-bind="text:'Вес/weight: '+$root.LeftItem().Weight()">***</div>
+                                    <div class="c-popup__price">
+                                        <span><span data-bind="text: $root.LeftItem().Price()"></span> сом</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-popup__item c-popup__item--r clearfix">
+                                <div class="c-popup__slider--r">
+                                    <!-- ko foreach: $root.HalfItemsR() -->
+                                    <div class="c-popup__media">
+                                        <div class="c-popup__img-wrap">
+                                            <img data-bind="attr: {src: Item.PicturePath + '_R.jpg'}" alt="" />
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <div class="c-popup__meta">
+                                    <div class="c-popup__title" data-bind="text: $root.RightItem().Item.Name"></div>
+                                    <div class="c-popup__text" data-bind="text: $root.RightItem().Item.Description"
+                                        style="white-space: pre-line"></div>
+                                    <div class="c-modificators" data-bind="foreach: $root.RightItem().ModifierGroups">
+                                        <div data-bind="if: Modifiers().length>0">
+                                            <div class="c-modificators__title">
+                                                К этому блюду Вы можете выбрать:
+                                            </div>
+                                            <div data-bind="if: MinimumSelected==0">
+                                                <div data-bind="foreach: Modifiers">
+                                                    <div class="c-modificators__item clearfix">
+                                                        <div class="c-modificators__form-item">
+                                                            <form action="4372.html">
+                                                                <div class="c-form__checkbox"
+                                                                    data-bind="click:function (){$parent.setModifiers($data)}">
+                                                                    <input type="checkbox"
+                                                                        data-bind="checked:IsChecked">
+                                                                    <label data-bind="text: Name"></label>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div data-bind="if: MinimumSelected > 0 && MaximumSelected>0">
+                                                <div data-bind="foreach: Modifiers">
+                                                    <div class="c-modificators__item clearfix">
+                                                        <div class="c-modificators__form-item"
+                                                            data-bind="click:function (){$parent.setModifier($data)}">
+                                                            <div class="c-form__radio">
+                                                                <input type="radio"
+                                                                    data-bind="checked:$parent.IsSelected,checkedValue:Code">
+                                                                <label data-bind="text: Name"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--.modificators-->
+                                    <div class="c-popup__weight"
+                                        data-bind="text:'Вес/weight: '+$root.RightItem().Weight()">***</div>
+                                    <div class="c-popup__price">
+                                        <span><span data-bind="text: $root.RightItem().Price()"></span> сом</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c-menu__actions js-roulette clearfix">
+                            <a href="4372.html#" class="c-menu__order c-button js-cartItem-comboToBasket"
+                                data-bind="attr:{dataId: $root.LeftItem().Number(), dataIdSecond: $root.RightItem().Number()}">В
+                                корзину</a>
+                        </div>
+                    </div>
+
+                </div>
+                <!--.c-popup-->
+                <!-- /ko -->
+            </div>
+
+            <div class="c-popup js-modal" id="modifiersModalId">
+                <!-- ko if: $root.IsSingle() && $root.AccessableSingle() -->
+                <div class="c-popup__mask js-mask js-close__modifs"
+                    data-bind="attr:{dataId: $root.CurrentItem().Number()}"></div>
+                <div class="c-modal__content">
+                    <div class="c-popup__close js-modal__trigger js-close__modifs"
+                        data-bind="attr:{dataId: $root.CurrentItem().Number()}"></div>
+                    <div class="c-popup__title">Модификаторы к этому блюду:</div>
+
+                    <div class="c-modificators" data-bind="foreach: $root.CurrentItem().ModifierGroups">
+                        <div data-bind="if: Modifiers().length>0">
+                            <div class="c-modificators__title">
+                                К этому блюду Вы можете выбрать:
+                            </div>
+                            <div data-bind="if: MinimumSelected==0">
+                                <div data-bind="foreach: Modifiers">
+                                    <div class="c-modificators__item clearfix">
+                                        <div class="c-modificators__form-item">
+                                            <form action="4372.html">
+                                                <div class="c-form__checkbox"
+                                                    data-bind="click:function (){$parent.setModifiers($data)}">
+                                                    <input type="checkbox" data-bind="checked:IsChecked">
+                                                    <label data-bind="text: Name"></label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-bind="if: MinimumSelected > 0 && MaximumSelected>0">
+                                <div data-bind="foreach: Modifiers">
+                                    <div class="c-modificators__item clearfix">
+                                        <div class="c-modificators__form-item"
+                                            data-bind="click:function (){$parent.setModifier($data)}">
+                                            <div class="c-form__radio">
+                                                <input type="radio"
+                                                    data-bind="checked:$parent.IsSelected,checkedValue:Code">
+                                                <label data-bind="text: Name"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c-popup__actions">
+                        <a href="4372.html#" onclick="return false" class="js-modal__trigger js-cartItem-addToBasket"
+                            data-bind="attr:{dataId: $root.CurrentItem().Number(), dataCount:$root.CurrentItem().ZCount()}">OK</a>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+
+
+
+        </div>
+
+        <footer id="TFooter" class="c-footer c-footer--fixed">
+            <div class="c-layout clearfix">
+                <div class="c-footer__apps clearfix">
+                    <a href="https://itunes.apple.com/ru/app/%D0%B8%D0%BC%D0%BF%D0%B5%D1%80%D0%B8%D1%8F-%D0%BF%D0%B8%D1%86%D1%86%D1%8B-%D0%B1%D0%B8%D1%88%D0%BA%D0%B5%D0%BA/id1040746585?mt=8"
+                        class="c-footer__app c-footer__app--apple-store"></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.timelysoft.virtualcardclient"
+                        class="c-footer__app c-footer__app--google-play"></a>
+                </div>
+                <div class="c-footer__social">
+                    <a href="https://www.facebook.com/mypizza.kg/"><i class="fa fa-facebook-square"
+                            aria-hidden="false"></i></a>
+                    <a href="https://www.instagram.com/mypizzakg/"><i class="fa fa-instagram"
+                            aria-hidden="true"></i></a>
+                    <a href="https://vk.com/mypizzakg"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                    <a href="https://ok.ru/mypizzakg"><i class="fa fa-odnoklassniki-square" aria-hidden="true"></i></a>
+                </div>
+                <div class="c-footer__copyright">
+                    &copy; 2002-2021 ИМПЕРИЯ ПИЦЦЫ.<br>Все права защищены
+                </div>
+            </div>
+        </footer>
+        <div class="c-mask js-mask"></div>
+    </div>
+
+
+
+    <script src="../../js/device.js%3Fv=LTaRUXK_aqqzrsXMHznj6vSCcryHf3xKoJgUIsLvDy0"></script>
+    <script src="../../plugins/modernizr/modernizr.js%3Fv=F-IljdV7bf4lH5S4axWl3de5ObgLSbEbxxU5yvSDphw"></script>
+    <script src="../../plugins/swiper/js/swiper.min.js%3Fv=xktjrXjsylce-TLUPmbhuL4nl3Db0mLlOTMKIctKm6o"></script>
+    <script
+        src="../../plugins/ResponsiveSlides/responsiveslides.min.js%3Fv=fpqXz82d8XcxrrFj_kR7bIEOUB72ZjSEg-RoIPRnXRs"></script>
+    <script src="../../js/site.min.js%3Fv=gtX8cFj09DMEpjseap1-BpykGnsMEyGdnJafrPF5b6w"></script>
+    <script src="../../js/core.js%3Fv=wBeW_UoktXGwV4w8wr9nG795qRvzikTK6QB22epupaY"></script>
+    <script src="../../js/site.js%3Fv=j--OUiqb9d-BfzK1XoqobPh-iyVzmSGzNXOeyObPcWQ"></script>
+    <script src="../../js/cartRepo.js%3Fv=E3dc6UgPUmOccFyelqlQILQ7afs3GBa27agKiKQGpZQ"></script>
+    <script src="../../js/viewModel.js%3Fv=UzrWYF3UPcVZBZC3Zuwdo-F9LPRIsMXeIYofpUocEMI"></script>
+    <script src="../../js/context.js%3Fv=CKK7tFzmPDzF5AjuhGydhXYMEaoF5XFcH3tEFnQiLzA"></script>
+    <script src="../../js/model.js%3Fv=zf8rMjypdWcHHp-Y3wMNr_pDUSczqNA6amAY-Ec5XbU"></script>
+    <script src="../../js/pizzaloader.js%3Fv=mYzC5Ld4vrffjAE8FlHE9IwQnA8DAEaT5KsbKynNjGg"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+
+
+    <script type="text/html" id="cartItemsTemplate">
+        <div class="c-cart__item">
+            <div class="c-cart__content clearfix">
+                <div class="c-cart__title" data-bind="text: Item.Name, attr: { dataId: Item.Number}"></div>
+                <div class="c-cart__price"><span><span data-bind="text: Item.Price*Count">0</span> c.</span></div>
+                <div class="c-menu__actions js-roulette clearfix">
+                    <span data-bind="attr: {dataId: Item.Number}" class="c-menu__arrow c-menu__arrow--minus  btn-decrease" title="уменьшить"></span>
+                    <span class="c-menu__count">
+                        <form action="4372.html">
+                            <input disabled type="text" class="js-roulette__count" data-bind="attr: {value: Count}" data-min="0" onkeypress="return isNumberKey(event)" />
+                        </form>
+                    </span>
+                    <span data-bind="attr: {dataId: Item.Number}" class="c-menu__arrow c-menu__arrow--plus  btn-increase" title="увеличить"></span>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="cartItemsTemplate2">
+        <div class="c-cart__item">
+            <div class="c-cart__content clearfix">
+                <div class="c-cart__title" data-bind="text: ParentName+': '+ItemL.Name+', '+ItemR.Name"></div>
+                <div class="c-cart__price"><span><span data-bind="text: ItemL.Price + ItemR.Price">0</span> c.</span></div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("body").addClass("is-sidebar");
+            $('#popupId').parent().removeClass("c-wrapper");
+            $('#popupId').parent().removeClass("c-site");
+            categoryController.init([{ "Number": 1022396, "Name": "Комбо пицца 40см.", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Комбо-пицца.jpg", "Price": 92233720368547758.07, "Description": "", "Weight": null, "Index": 0, "ModifierGroups": [{ "MaximumSelected": 2, "MinimumSelected": 2, "Modifiers": [{ "Code": 1022363, "Name": "Классика 1/2 40см", "Quantity": 1 }, { "Code": 1022364, "Name": "4 Сыра 1/2 40см", "Quantity": 1 }, { "Code": 1022365, "Name": "Ассорти 1/2 40см", "Quantity": 1 }, { "Code": 1022369, "Name": "Детская 1/2 40см", "Quantity": 1 }, { "Code": 1022370, "Name": "Домашняя 1/2 40см", "Quantity": 1 }, { "Code": 1022371, "Name": "Куриная 1/2 40см", "Quantity": 1 }, { "Code": 1022372, "Name": "Маргарита 1/2 40см", "Quantity": 1 }, { "Code": 1022373, "Name": "Москвичка 1/2 40см", "Quantity": 1 }, { "Code": 1022374, "Name": "Обжорка 1/2 40см", "Quantity": 1 }, { "Code": 1022375, "Name": "Охотничья 1/2 40см", "Quantity": 1 }, { "Code": 1022376, "Name": "Пепперони 1/2 40см", "Quantity": 1 }, { "Code": 1022377, "Name": "Райские Грезы 1/2 40см", "Quantity": 1 }, { "Code": 1022378, "Name": "Тропиканка 1/2 40см", "Quantity": 1 }, { "Code": 1022379, "Name": "Турецкий Гамбит 1/2 40см", "Quantity": 1 }, { "Code": 1022380, "Name": "Фрикасе 1/2 40см", "Quantity": 1 }, { "Code": 1022382, "Name": "Чили 1/2 40см", "Quantity": 1 }, { "Code": 1022383, "Name": "Гасконская 1/2 40см", "Quantity": 1 }, { "Code": 1022384, "Name": "Деревенская 1/2 40см", "Quantity": 1 }, { "Code": 1022386, "Name": "Шашлычная с говядиной 1/2 40см", "Quantity": 1 }, { "Code": 1022387, "Name": "Карри 1/2 40см", "Quantity": 1 }, { "Code": 1022390, "Name": "Итальянка 1/2 40см", "Quantity": 1 }, { "Code": 1030498, "Name": "Мегапепперони 1/2 40см", "Quantity": 1 }, { "Code": 1030499, "Name": "Паназиатская 1/2 40см", "Quantity": 1 }, { "Code": 1030500, "Name": "По-тайски 1/2 40см", "Quantity": 1 }, { "Code": 1030501, "Name": "Сюприм 1/2 40см", "Quantity": 1 }, { "Code": 1032819, "Name": "Греческая 1/2 40см", "Quantity": 1 }, { "Code": 1032820, "Name": "Супер сыр 1/2 40см", "Quantity": 1 }, { "Code": 1032824, "Name": "Вегетарианская 1/2 40см", "Quantity": 1 }, { "Code": 1032825, "Name": "Хот-дог 1/2 40см", "Quantity": 1 }, { "Code": 1032826, "Name": "Цезарь 1/2 40см", "Quantity": 1 }], "Name": "Комбо пицца 40см.", "ShowPopUp": false }], "Childs": [{ "Number": 1018831, "Name": "Итальянка 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Пицца-Итальянка", "Price": 335.0, "Description": "Пицца Итальянка.\r\nПицца-соус, сыр моцарелла, говядина с грибами Вешенками в сливочном соусе, зелень.\r\nItalian Pizza.\r\nPizza sauce, mozzarella, beef with oyster mushrooms in creamy sauce, greens.", "Weight": "600 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1018819, "Name": "Хот-дог 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Пицца-Хот-дог", "Price": 285.0, "Description": "Пицца  соус, сыр \"Моцарелла\",  молочные сосиски, охотничьи колбаски, горчица медовая.\r\nAssortment\r\nPizza sauce, Mozzarella,  sausages, hunter’s sausages, honey mustard.", "Weight": "500 г", "Index": 1, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1018795, "Name": "Карри 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Пицца-Карри", "Price": 295.0, "Description": "Пицца Карри.\r\nПицца-соус, сыр моцарелла, курица карри в остром фирменном соусе, кинза.\r\nCurry Pizza.\r\nPizza sauce, mozzarella, curry chicken in spicy sauce, cilantro.", "Weight": "645 г", "Index": 2, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1006154, "Name": "Шашлычная с говядиной 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/шашлычная_говядина", "Price": 265.0, "Description": "Пицца Шашлычная с говядиной.\r\nПицца-соус, сыр моцарелла, маринованная говядина, помидоры, зелень. Подаётся с маринованным луком.\r\nBarbecue pizza with beef.\r\nPizza sauce, mozzarella, marinated beef, tomatoes, greens. Served with pickled onions.", "Weight": "475 г", "Index": 3, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1003627, "Name": "Деревенская 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/деревенская", "Price": 345.0, "Description": "Пицца Деревенская.\r\nПицца-соус, сыр моцарелла, маринованная говядина, копчёная утиная грудка, шампиньоны, чеснок, лук, зелень.\r\nVillage Pizza.\r\nPizza sauce, mozzarella, marinated beef, smoked duck breast, champignon mushrooms, garlic, onion, greens.", "Weight": "610 г", "Index": 4, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003730, "Name": "без утиной грудки", "Quantity": 1 }, { "Code": 1003732, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003733, "Name": "без чеснока", "Quantity": 1 }, { "Code": 1003734, "Name": "без лука", "Quantity": 1 }], "Name": "Пицца \"Деревенская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1003626, "Name": "Гасконская 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Гасконская", "Price": 280.0, "Description": "Пицца Гасконская.\r\nПицца-соус, сыр моцарелла, копчёная утиная грудка, шампиньоны, болгарский перец, помидоры, кукуруза, майонез, зелень.\r\nGascon Pizza.\r\nPizza sauce, mozzarella, smoked duck breast, сhampignon mushrooms, bell peppers, tomatoes, corn, mayonnaise, parsley.", "Weight": "655 г", "Index": 5, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003722, "Name": "без утинной грудки", "Quantity": 1 }, { "Code": 1003723, "Name": "без кукурузы", "Quantity": 1 }, { "Code": 1003724, "Name": "без болгарского перца", "Quantity": 1 }, { "Code": 1003726, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003727, "Name": "без майонеза", "Quantity": 1 }, { "Code": 1003728, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Гасконская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1032787, "Name": "Греческая 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/греческая", "Price": 305.0, "Description": "Пицца-соус, сыр фетаки, болгарский перец, помидоры, оливки, маслины, орегано.\r\nPizza sauce, fetaki cheese, bell peppers, tomatoes, olives, oregano.", "Weight": "", "Index": 6, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1032777, "Name": "Супер сыр 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/супер сыр", "Price": 235.0, "Description": "Пицца-соус, сыры: моцарелла, сулугуни, чечил, тильзитский.\r\nPizza sauce with mozzarella, suluguni, chechil, tilzit.", "Weight": "", "Index": 7, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030484, "Name": "Сюприм 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пицца_сюприм", "Price": 300.0, "Description": "Пицца Сюприм\r\nПицца-соус, сыр Моцарелла, ветчина, салями, охотничьи колбаски, перец болгарский, оливки, лук маринованный.\r\n\r\nSupreme pizza\r\nPizza sauce, Mozzarella, ham, salami, hunting sausages, bell pepper, olives, pickled onions.", "Weight": "530 г", "Index": 8, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030474, "Name": "Мегапепперони 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пицца_мегапепперони", "Price": 240.0, "Description": "Пицца Мега Пепперони\r\nПицца-соус, сыр Моцарелла, салями, перчики Халапеньо.\r\n\r\nMega pepperoni\r\nPizza sauce, Mozzarella, salami, jalapeno peppers.", "Weight": "470 г", "Index": 9, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030464, "Name": "По-тайски 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пицца_по-тайски", "Price": 320.0, "Description": "Пицца по-тайски\r\nСоус Пад-тай, сыр Моцарелла, куриное филе маринованное, грибы вешeнки, лук маринованный, перчики Халапеньо, кинза.\r\n\r\nThai pizza\r\nPad Thai sauce, Mozzarella, marinated chicken, oyster mushrooms, pickled onions, jalapeno peppers, cilantro.", "Weight": "530 г", "Index": 10, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030454, "Name": "Паназиатская 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пицца_паназиатская", "Price": 320.0, "Description": "Пицца Паназиатская\r\nСоус Том ям, сыр Моцарелла, куриное филе маринованное, грибы вешенки, помидоры, кинза.\r\n\r\nPan-Asian pizza\r\nTom yum sauce, Mozzarella, marinated chicken, oyster mushrooms, tomatoes, cilantro.", "Weight": "525 г", "Index": 11, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000240, "Name": "Чили 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Чили", "Price": 285.0, "Description": "Пицца Чили.\r\nГовяжий фарш, острые перчики, болгарский перец, томаты, специи, сыр моцарелла.\r\nChili Pizza.\r\nMinced beef, chili pepper, bell pepper, tomatoes, spices, mozzarella cheese.", "Weight": "575 г", "Index": 12, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000239, "Name": "Цезарь 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Пицца-Цезарь", "Price": 360.0, "Description": "Фирменный соус «Цезарь», сыр «Моцарелла», куриная грудка, \r\nлистья салата, оливки\r\nCaesar\r\nHomemade sauce Caesar, Mozzarella, chicken breast, lettuce, olives", "Weight": "500 г", "Index": 13, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 1, "Modifiers": null, "Name": "Пицца \"Цезарь\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000238, "Name": "Фрикасе 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/фрикасе", "Price": 315.0, "Description": "Пицца Фрикасе.\r\nКуриная грудка, грибы Вешенки, кукуруза, сливочный соус, зелень.\r\nFricassee Pizza.\r\nChicken breast, oyster mushrooms, corn, cream sauce, greens.", "Weight": "575 г", "Index": 14, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000237, "Name": "Турецкий Гамбит 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Турецкий-гамбит", "Price": 270.0, "Description": "Пицца Турецкий гамбит.\r\nПицца-соус, сыр моцарелла, говядина, фасоль, баранина, помидоры, болгарский перец, чили, грецкий орех, сельдерей.\r\nTurkish Gambit Pizza.\r\nPizza sauce, Mozzarella, beef, mutton, beans, tomatoes, sweet pepper, chili, walnut, celery.", "Weight": "625 г", "Index": 15, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003787, "Name": "без грецкого ореха", "Quantity": 1 }], "Name": "Пицца \"Турецкий Гамбит\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000236, "Name": "Тропиканка 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/тропиканка", "Price": 220.0, "Description": "Пицца Тропиканка.\r\nПицца-соус, сыр моцарелла, куриная грудка, ананас, острые перчики (по желанию).\r\nTropicana Pizza.\r\nPizza sauce, mozzarella, chicken breast, pineapple, chili pepper (selective).", "Weight": "525 г", "Index": 16, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003687, "Name": "Без сыра \"моцарелла\"", "Quantity": 1 }, { "Code": 1003688, "Name": "Без куринной грудки", "Quantity": 1 }, { "Code": 1003689, "Name": "Без острых перчиков", "Quantity": 1 }, { "Code": 1003793, "Name": "перчики отдельно", "Quantity": 1 }, { "Code": 1004019, "Name": "острые перчики на половину пиццы", "Quantity": 1 }, { "Code": 1004020, "Name": "пол. порции острых перчиков", "Quantity": 1 }], "Name": "Пицца \"Тропиканка\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000235, "Name": "Райские Грезы 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Райские-грезы", "Price": 395.0, "Description": "Пицца Райские грёзы.\r\nПицца-соус, сыры: моцарелла и эмменталь, язык отварной, куриная грудка, ветчина, утиная грудка, помидоры, шампиньоны, зелень.\r\nParadise Dream Pizza.\r\nPizza sauce, mozzarella, emmental, boiled beef tongue, chicken breast, ham, duck breast, tomatoes, champignon mushrooms, greens.", "Weight": "640 г", "Index": 17, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003874, "Name": "без языка", "Quantity": 1 }, { "Code": 1003875, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003876, "Name": "без эменталь", "Quantity": 1 }, { "Code": 1003877, "Name": "без куриной грудки", "Quantity": 1 }, { "Code": 1003878, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003879, "Name": "без утиной грудки", "Quantity": 1 }, { "Code": 1003880, "Name": "без помидор", "Quantity": 1 }, { "Code": 1003881, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Райские Грезы\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000234, "Name": "Пепперони 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пепперони", "Price": 220.0, "Description": "Пицца Пепперони.\r\nПицца-соус, сыр моцарелла, салями, шампиньоны.\r\nPepperoni Pizza.\r\nPizza sauce, Mozzarella, salami, champignon mushrooms.", "Weight": "485 г", "Index": 18, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003785, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003786, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Пепперони\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000233, "Name": "Охотничья 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/охотничья", "Price": 270.0, "Description": "Пицца Охотничья.\r\nПицца-соус, сыр моцарелла, куриная грудка, копчёная курица, охотничьи колбаски, лук, оливки, маринованные огурцы.\r\nHunter Pizza.\r\nPizza sauce, mozzarella, chicken breast, smoked chicken, hunter’s sausages, onion, olives, marinated cucumbers.", "Weight": "600 г", "Index": 19, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003780, "Name": "без охотничьих колбасок", "Quantity": 1 }, { "Code": 1003781, "Name": "без копчен. курицы", "Quantity": 1 }, { "Code": 1003782, "Name": "без лука", "Quantity": 1 }, { "Code": 1003783, "Name": "без маринов. курицы", "Quantity": 1 }, { "Code": 1003784, "Name": "без маринованных огурцов", "Quantity": 1 }], "Name": "Пицца \"Охотничья\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000232, "Name": "Обжорка 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/обжорка", "Price": 385.0, "Description": "Пицца Обжорка.\r\nПицца-соус, говяжий фарш, сыр моцарелла, помидоры, майонез, кетчуп, зелень, маринованные огурцы.\r\nObjorka Pizza.\r\nPizza sauce, mozzarella, minced beef, marinated cucumbers, tomatoes, mayonnaise, ketchup, greens.", "Weight": "695 г", "Index": 20, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003765, "Name": "без маринованных огурцов", "Quantity": 1 }, { "Code": 1003766, "Name": "без лука", "Quantity": 1 }, { "Code": 1003767, "Name": "без майонеза", "Quantity": 1 }, { "Code": 1003768, "Name": "без кетчупа", "Quantity": 1 }, { "Code": 1003769, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Обжорка\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000231, "Name": "Москвичка 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Москвичка", "Price": 305.0, "Description": "Пицца Москвичка.\r\nПицца-соус, сыр моцарелла, говядина, куриная грудка, бекон, болгарский перец, помидоры, шампиньоны.\r\nMoscow Girl Pizza.\r\nPizza sauce, mozzarella, beef, chicken breast, bacon, bell pepper, tomatoes, champignon mushrooms.", "Weight": "615 г", "Index": 21, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003758, "Name": "без бекона", "Quantity": 1 }, { "Code": 1003759, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003760, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003761, "Name": "без помидор", "Quantity": 1 }, { "Code": 1003762, "Name": "без куринной  грудки", "Quantity": 1 }, { "Code": 1003763, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Москвичка\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000230, "Name": "Маргарита 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Маргарита", "Price": 155.0, "Description": "Пицца Маргарита.\r\nПицца-соус, сыр моцарелла, орегано, помидоры, базилик.\r\nMargarita Pizza.\r\nPizza sauce, mozzarella, oregano, tomatoes, basil.", "Weight": "400 г", "Index": 22, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 5, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003665, "Name": "Без орегано", "Quantity": 1 }, { "Code": 1003666, "Name": "без базилика", "Quantity": 1 }, { "Code": 1005885, "Name": "Без помидор", "Quantity": 1 }], "Name": "Пицца \"Маргарита\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000229, "Name": "Куриная 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Куриная", "Price": 295.0, "Description": "Пицца Куриная.\r\nПицца-соус, сыр моцарелла, куриная грудка в сливочном соусе, зелень.\r\nChicken Pizza.\r\nPizza sauce, mozzarella, chicken breast in cream sauce, greens.", "Weight": "575 г", "Index": 23, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000227, "Name": "Классика 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/классика", "Price": 270.0, "Description": "Пицца Классика.\r\nПицца-соус, сыр моцарелла, ветчина, салями, шампиньоны.\r\nClassic Pizza.\r\nPizza sauce, mozzarella, ham, salami, champignon mushrooms.", "Weight": "530 г", "Index": 24, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003755, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003756, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003757, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Классика\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000225, "Name": "Домашняя 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/домашняя", "Price": 205.0, "Description": "Пицца Домашняя.\r\nПицца-соус, сыр моцарелла, ветчина, помидоры, шампиньоны, зелень.\r\nHomemade Pizza.\r\nPizza sauce, mozzarella, ham, tomatoes, champignon mushrooms, greens.", "Weight": "495 г", "Index": 25, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003746, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003747, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003749, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003750, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Домашняя\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000224, "Name": "Детская 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/детская", "Price": 225.0, "Description": "Пицца Детская.\r\nПицца-соус, сыр моцарелла, сосиски, помидоры, кукуруза.\r\nChildren’s Pizza.\r\nPizza sauce, mozzarella, sausages, tomatoes, corn.", "Weight": "555 г", "Index": 26, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003770, "Name": "без кукурузы", "Quantity": 1 }, { "Code": 1003771, "Name": "без сосисек", "Quantity": 1 }, { "Code": 1003772, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Детская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000221, "Name": "Вегетарианская 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/вегетарианская", "Price": 240.0, "Description": "Пицца-соус, сыр «Моцарелла», зелень, лук, шампиньоны, болгарский перец, \r\nпомидоры, маслины, кукуруза\r\nVegetarian\r\nPizza sauce, Mozzarella, greens, onion, champignon mushrooms, bell pepper, \r\ntomatoes, olives, corn", "Weight": "500 г", "Index": 27, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003672, "Name": "без помидор", "Quantity": 1 }, { "Code": 1003673, "Name": "без лука", "Quantity": 1 }, { "Code": 1003674, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003675, "Name": "без болгарского перца", "Quantity": 1 }, { "Code": 1003676, "Name": "без маслин", "Quantity": 1 }, { "Code": 1003677, "Name": "без кукрузы", "Quantity": 1 }], "Name": "Пицца \"Вегетарианская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000219, "Name": "Ассорти 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Ассорти", "Price": 285.0, "Description": "Пицца Ассорти.\r\nПицца-соус, сыр моцарелла, салями, говядина, болгарский перец, маслины, зелень.\r\nAssorted Pizza.\r\nPizza sauce, Mozzarella, salami, beef, bell pepper, olives, greens.", "Weight": "550 г", "Index": 28, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003716, "Name": "без маслин", "Quantity": 1 }, { "Code": 1003717, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003718, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003719, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Ассорти\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000218, "Name": "4 Сыра 1/2 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/4-сыра", "Price": 270.0, "Description": "Пицца 4 сыра.\r\nПицца-соус, сыры: моцарелла, эмменталь, дорблю, пармезан.\r\n4 Cheese Pizza.\r\nPizza sauce with mozzarella, emmental, dorblue, parmesan.", "Weight": "460 г", "Index": 29, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003712, "Name": "без дор-блю", "Quantity": 1 }, { "Code": 1003713, "Name": "без пармезана", "Quantity": 1 }, { "Code": 1003715, "Name": "без эменталь", "Quantity": 1 }], "Name": "Пицца \"4-СЫРА\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }] }, { "Number": 1018735, "Name": "Итальянка 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Пицца-Итальянка.jpg", "Price": 665.0, "Description": "Пицца Итальянка.\r\nПицца-соус, сыр моцарелла, говядина с грибами-вёшенками в сливочном соусе, зелень.\r\nItalian Pizza.\r\nPizza sauce, mozzarella, beef with oyster mushrooms in creamy sauce, greens.", "Weight": "1200 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003716, "Name": "без маслин", "Quantity": 1 }, { "Code": 1003717, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003718, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003719, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Ассорти\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1018699, "Name": "Карри 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/2021\\Острые пиццы\\Пицца-Карри_острая.jpg", "Price": 590.0, "Description": "Пицца Карри.\r\nПицца-соус, сыр моцарелла, курица карри в остром фирменном соусе, кинза.\r\nCurry Pizza.\r\nPizza sauce, mozzarella, curry chicken in spicy sauce, cilantro.", "Weight": "1290 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003716, "Name": "без маслин", "Quantity": 1 }, { "Code": 1003717, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003718, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003719, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Ассорти\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1006150, "Name": "Шашлычная с говядиной 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/шашлычная_говядина.jpg", "Price": 530.0, "Description": "Пицца Шашлычная с говядиной.\r\nПицца-соус, сыр моцарелла, маринованная говядина, помидоры, зелень. Подаётся с маринованным луком.\r\nBarbecue pizza with beef.\r\nPizza sauce, mozzarella, marinated beef, tomatoes, greens. Served with pickled onions.", "Weight": "950 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1003610, "Name": "Деревенская 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/деревенская.jpg", "Price": 690.0, "Description": "Пицца Деревенская.\r\nПицца-соус, сыр моцарелла, маринованная говядина, копчёная утиная грудка, шампиньоны, чеснок, лук, зелень.\r\nVillage Pizza.\r\nPizza sauce, mozzarella, marinated beef, smoked duck breast, champignon mushrooms, garlic, onion, greens.", "Weight": "1225 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003730, "Name": "без утиной грудки", "Quantity": 1 }, { "Code": 1003732, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003733, "Name": "без чеснока", "Quantity": 1 }, { "Code": 1003734, "Name": "без лука", "Quantity": 1 }], "Name": "Пицца \"Деревенская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1003609, "Name": "Гасконская 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Гасконская.jpg", "Price": 560.0, "Description": "Пицца Гасконская.\r\nПицца-соус, сыр моцарелла, копчёная утиная грудка, шампиньоны, болгарский перец, помидоры, кукуруза, майонез, зелень.\r\nGascon Pizza.\r\nPizza sauce, mozzarella, smoked duck breast, сhampignon mushrooms, bell peppers, tomatoes, corn, mayonnaise, parsley.", "Weight": "1310 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003722, "Name": "без утинной грудки", "Quantity": 1 }, { "Code": 1003723, "Name": "без кукурузы", "Quantity": 1 }, { "Code": 1003724, "Name": "без болгарского перца", "Quantity": 1 }, { "Code": 1003726, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003727, "Name": "без майонеза", "Quantity": 1 }, { "Code": 1003728, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Гасконская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1032184, "Name": "Греческая 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/греческая.png", "Price": 610.0, "Description": "Пицца-соус, сыр фетаки, болгарский перец, помидоры, оливки, маслины, орегано.\r\nPizza sauce, fetaki cheese, bell peppers, tomatoes, olives, oregano.", "Weight": "", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1032174, "Name": "Супер сыр 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/супер сыр.png", "Price": 470.0, "Description": "Пицца-соус, сыры: моцарелла, сулугуни, чечил, тильзитский.\r\nPizza sauce with mozzarella, suluguni, chechil, tilzit.", "Weight": "", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000288, "Name": "Чили 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/2021\\Острые пиццы\\Чили_острая.jpg", "Price": 570.0, "Description": "Пицца Чили.\r\nГовяжий фарш, острые перчики, болгарский перец, томаты, специи, сыр моцарелла.\r\nChili Pizza.\r\nMinced beef, chili pepper, bell pepper, tomatoes, spices, mozzarella cheese.", "Weight": "1150 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000286, "Name": "Фрикасе 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/фрикасе.jpg", "Price": 630.0, "Description": "Пицца Фрикасе.\r\nКуриная грудка, грибы Вешенки, кукуруза, сливочный соус, зелень.\r\nFricassee Pizza.\r\nChicken breast, oyster mushrooms, corn, cream sauce, greens.", "Weight": "1150 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000285, "Name": "Турецкий Гамбит 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Турецкий-гамбит.jpg", "Price": 540.0, "Description": "Пицца Турецкий Гамбит.\r\nПицца-соус, сыр моцарелла, говядина, фасоль, баранина, помидоры, болгарский перец, чили, грецкий орех, сельдерей.\r\nTurkish Gambit Pizza.\r\nPizza sauce, Mozzarella, beef, mutton, beans, tomatoes, sweet pepper, chili, walnut, celery.", "Weight": "1255 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003787, "Name": "без грецкого ореха", "Quantity": 1 }], "Name": "Пицца \"Турецкий Гамбит\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000284, "Name": "Тропиканка 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/тропиканка.jpg", "Price": 440.0, "Description": "Пицца Тропиканка.\r\nПицца-соус, сыр моцарелла, куриная грудка, ананас, острые перчики (по желанию).\r\nTropicana Pizza.\r\nPizza sauce, mozzarella, chicken breast, pineapple, chili pepper (selective).", "Weight": "1050 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003687, "Name": "Без сыра \"моцарелла\"", "Quantity": 1 }, { "Code": 1003688, "Name": "Без куринной грудки", "Quantity": 1 }, { "Code": 1003689, "Name": "Без острых перчиков", "Quantity": 1 }, { "Code": 1003793, "Name": "перчики отдельно", "Quantity": 1 }, { "Code": 1004019, "Name": "острые перчики на половину пиццы", "Quantity": 1 }, { "Code": 1004020, "Name": "пол. порции острых перчиков", "Quantity": 1 }], "Name": "Пицца \"Тропиканка\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000283, "Name": "Райские Грезы 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Райские-грезы.jpg", "Price": 790.0, "Description": "Пицца Райские грёзы.\r\nПицца-соус, сыры: моцарелла и эмменталь, язык отварной, куриная грудка, ветчина, утиная грудка, помидоры, шампиньоны, зелень.\r\nParadise Dream Pizza.\r\nPizza sauce, mozzarella, emmental, boiled beef tongue, chicken breast, ham, duck breast, tomatoes, champignon mushrooms, greens.", "Weight": "1280 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003874, "Name": "без языка", "Quantity": 1 }, { "Code": 1003875, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003876, "Name": "без эменталь", "Quantity": 1 }, { "Code": 1003877, "Name": "без куриной грудки", "Quantity": 1 }, { "Code": 1003878, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003879, "Name": "без утиной грудки", "Quantity": 1 }, { "Code": 1003880, "Name": "без помидор", "Quantity": 1 }, { "Code": 1003881, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Райские Грезы\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000282, "Name": "Пепперони 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пепперони.jpg", "Price": 440.0, "Description": "Пицца Пепперони.\r\nПицца-соус, сыр моцарелла, салями, шампиньоны.\r\nPepperoni Pizza.\r\nPizza sauce, Mozzarella, salami, champignon mushrooms.", "Weight": "970 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003785, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003786, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Пепперони\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000281, "Name": "Охотничья 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/охотничья.jpg", "Price": 540.0, "Description": "Пицца Охотничья.\r\nПицца-соус, сыр моцарелла, куриная грудка, копчёная курица, охотничьи колбаски, лук, оливки, маринованные огурцы.\r\nHunter Pizza.\r\nPizza sauce, mozzarella, chicken breast, smoked chicken, hunter’s sausages, onion, olives, marinated cucumbers.", "Weight": "1200 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003780, "Name": "без охотничьих колбасок", "Quantity": 1 }, { "Code": 1003781, "Name": "без копчен. курицы", "Quantity": 1 }, { "Code": 1003782, "Name": "без лука", "Quantity": 1 }, { "Code": 1003783, "Name": "без маринов. курицы", "Quantity": 1 }, { "Code": 1003784, "Name": "без маринованных огурцов", "Quantity": 1 }], "Name": "Пицца \"Охотничья\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000280, "Name": "Обжорка 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/обжорка.jpg", "Price": 770.0, "Description": "Пицца Обжорка.\r\nПицца-соус, говяжий фарш, сыр моцарелла, помидоры, майонез, кетчуп, зелень, маринованные огурцы.\r\nObjorka Pizza.\r\nPizza sauce, mozzarella, minced beef, marinated cucumbers, tomatoes, mayonnaise, ketchup, greens.", "Weight": "1390 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003765, "Name": "без маринованных огурцов", "Quantity": 1 }, { "Code": 1003766, "Name": "без лука", "Quantity": 1 }, { "Code": 1003767, "Name": "без майонеза", "Quantity": 1 }, { "Code": 1003768, "Name": "без кетчупа", "Quantity": 1 }, { "Code": 1003769, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Обжорка\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000279, "Name": "Москвичка 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Москвичка.jpg", "Price": 610.0, "Description": "Пицца Москвичка.\r\nПицца-соус, сыр моцарелла, говядина, куриная грудка, болгарский перец, помидоры, шампиньоны.\r\nMoscow Girl Pizza.\r\nPizza sauce, mozzarella, beef, chicken breast, bell pepper, tomatoes, champignon mushrooms.", "Weight": "1230 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003758, "Name": "без бекона", "Quantity": 1 }, { "Code": 1003759, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003760, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003761, "Name": "без помидор", "Quantity": 1 }, { "Code": 1003762, "Name": "без куринной  грудки", "Quantity": 1 }, { "Code": 1003763, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Москвичка\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000278, "Name": "Маргарита 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Маргарита.jpg", "Price": 310.0, "Description": "Пицца Маргарита.\r\nПицца-соус, сыр моцарелла, орегано, помидоры, базилик.\r\nMargarita Pizza.\r\nPizza sauce, mozzarella, oregano, tomatoes, basil.", "Weight": "800 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 5, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003665, "Name": "Без орегано", "Quantity": 1 }, { "Code": 1003666, "Name": "без базилика", "Quantity": 1 }, { "Code": 1005885, "Name": "Без помидор", "Quantity": 1 }], "Name": "Пицца \"Маргарита\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000277, "Name": "Куриная 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Куриная.jpg", "Price": 590.0, "Description": "Пицца Куриная.\r\nПицца-соус, сыр моцарелла, куриная грудка в сливочном соусе, зелень.\r\nChicken Pizza.\r\nPizza sauce, mozzarella, chicken breast in cream sauce, greens.", "Weight": "1155 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000275, "Name": "Классика 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/классика.jpg", "Price": 540.0, "Description": "Пицца Классика.\r\nПицца-соус, сыр моцарелла, ветчина, салями, шампиньоны.\r\nClassic Pizza.\r\nPizza sauce, mozzarella, ham, salami, champignon mushrooms.", "Weight": "1065 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003755, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003756, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003757, "Name": "без грибов", "Quantity": 1 }], "Name": "Пицца \"Классика\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000273, "Name": "Домашняя 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/домашняя.jpg", "Price": 410.0, "Description": "Пицца Домашняя.\r\nПицца-соус, сыр моцарелла, ветчина, помидоры, шампиньоны, зелень.\r\nHomemade Pizza.\r\nPizza sauce, mozzarella, ham, tomatoes, champignon mushrooms, greens.", "Weight": "990 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003746, "Name": "без ветчины", "Quantity": 1 }, { "Code": 1003747, "Name": "без грибов", "Quantity": 1 }, { "Code": 1003749, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003750, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Домашняя\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000272, "Name": "Детская 40см", "IsCoupon": true, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/детская.jpg", "Price": 450.0, "Description": "Пицца Детская.\r\nПицца-соус, сыр моцарелла, сосиски, помидоры, кукуруза.\r\nChildren’s Pizza.\r\nPizza sauce, mozzarella, sausages, tomatoes, corn.", "Weight": "1110 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003770, "Name": "без кукурузы", "Quantity": 1 }, { "Code": 1003771, "Name": "без сосисек", "Quantity": 1 }, { "Code": 1003772, "Name": "без помидор", "Quantity": 1 }], "Name": "Пицца \"Детская\"", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000267, "Name": "Ассорти 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/Ассорти.jpg", "Price": 570.0, "Description": "Пицца Ассорти.\r\nПицца-соус, сыр моцарелла, салями, говядина, болгарский перец, маслины, зелень.\r\nAssorted Pizza.\r\nPizza sauce, Mozzarella, salami, beef, bell pepper, olives, greens.", "Weight": "1100 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003716, "Name": "без маслин", "Quantity": 1 }, { "Code": 1003717, "Name": "без пепперони", "Quantity": 1 }, { "Code": 1003718, "Name": "без говядины", "Quantity": 1 }, { "Code": 1003719, "Name": "без болгарского перца", "Quantity": 1 }], "Name": "Пицца \"Ассорти\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1000266, "Name": "4 Сыра 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/4-сыра.jpg", "Price": 540.0, "Description": "Пицца 4 сыра.\r\nПицца-соус, сыры: моцарелла, эмменталь, дорблю, пармезан.\r\n4 Cheese Pizza.\r\nPizza sauce with mozzarella, emmental, dorblue, parmesan.", "Weight": "920 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003712, "Name": "без дор-блю", "Quantity": 1 }, { "Code": 1003713, "Name": "без пармезана", "Quantity": 1 }, { "Code": 1003715, "Name": "без эменталь", "Quantity": 1 }], "Name": "Пицца \"4-СЫРА\"", "ShowPopUp": false }, { "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030061, "Name": "Сюприм 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/пицца_сюприм.jpg", "Price": 595.0, "Description": "Пицца Сюприм\r\nПицца-соус, сыр Моцарелла, ветчина, салями, охотничьи колбаски, перец болгарский, оливки, лук маринованный.\r\n\r\nSupreme pizza\r\nPizza sauce, Mozzarella, ham, salami, hunting sausages, bell pepper, olives, pickled onions.", "Weight": "1060 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030051, "Name": "Мегапепперони 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/2021\\Острые пиццы\\пицца_мегапепперони_острая.jpg", "Price": 480.0, "Description": "Пицца Мега Пепперони\r\nПицца-соус, сыр Моцарелла, салями, перчики Халапеньо.\r\n\r\nMega pepperoni\r\nPizza sauce, Mozzarella, salami, jalapeno peppers.", "Weight": "940 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030041, "Name": "По-тайски 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/2021\\Острые пиццы\\пицца_по-тайски_острая.jpg", "Price": 640.0, "Description": "Пицца по-тайски\r\nСоус Пад-тай, сыр Моцарелла, куриное филе маринованное, грибы вешeнки, лук маринованный, перчики Халапеньо, кинза.\r\n\r\nThai pizza\r\nPad Thai sauce, Mozzarella, marinated chicken, oyster mushrooms, pickled onions, jalapeno peppers, cilantro.", "Weight": "1065 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }, { "Number": 1030031, "Name": "Паназиатская 40см", "IsCoupon": false, "IsDelivery": true, "PicturePath": "https://mobile.mypizza.kg/jpg/2021\\Острые пиццы\\пицца_паназиатская_острая.jpg", "Price": 640.0, "Description": "Пицца Паназиатская\r\nСоус Том ям, сыр Моцарелла, куриное филе маринованное, грибы вешенки, помидоры, кинза.\r\n\r\nPan-Asian pizza\r\nTom yum sauce, Mozzarella, marinated chicken, oyster mushrooms, tomatoes, cilantro.", "Weight": "1050 г", "Index": 0, "ModifierGroups": [{ "MaximumSelected": 0, "MinimumSelected": 0, "Modifiers": [{ "Code": 1003662, "Name": "без зелени", "Quantity": 1 }, { "Code": 1003663, "Name": "хорошо прожарить", "Quantity": 1 }, { "Code": 1003671, "Name": "без моцареллы", "Quantity": 1 }], "Name": "Пицца", "ShowPopUp": false }], "Childs": [] }],
+                document,
+                '.c-cart__sum',
+                'basket',
+                'CategoryItems_AB',
+                'popupId',
+                'modifiersModalId');
+        });
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if ((charCode < 48 || charCode > 57))
+                return false;
+            console.log("true");
+            return true;
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        //Удалить fixed- footer в случаи не главной страницы
+        $(document).ready(function () {
+            var t = document.getElementById("Tname");
+            if ("Главная страница | Империя пиццы" != t.text) {
+                document.getElementById("TFooter").classList.remove('c-footer--fixed');
+            }
+        });
+
+        (function (w, d, s, u) {
+            w.RocketChat = function (c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;
+            var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
+            j.async = true; j.src = 'https://chat.mypizza.kg/packages/rocketchat_livechat/assets/rocketchat-livechat.min.js?_=201702160944';
+            h.parentNode.insertBefore(j, h);
+        })(window, document, 'script', 'https://chat.mypizza.kg/livechat');
+    </script>
+
+</body>
+
+</html>

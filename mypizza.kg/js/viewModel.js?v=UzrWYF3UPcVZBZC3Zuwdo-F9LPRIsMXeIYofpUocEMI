@@ -1,0 +1,816 @@
+﻿function CartItem(item, count, id) {
+    var self = this;
+    self.Id = id;
+    //self.Item = item;
+    self.Item = new Cart(item);
+    self.Name = ko.observable(item.Name);
+    self.Number = ko.observable(item.Number);
+    self.Price = ko.observable(item.Price);
+    self.Count = ko.observable(count);
+    self.ZCount = ko.observable(0); 
+    self.PicturePath = ko.observable(item.PicturePath); 
+    self.oldCount = parseInt(0);
+    self.TotalCount = ko.observable(0);
+    self.Weight = ko.observable(item.Weight || "***");
+    self.ModifierGroups = ko.observableArray();
+    self.Childs = ko.observableArray();
+    self.Index = ko.observable(0);
+
+    var tCount = 0;
+    var carts = GetCart();
+    for (var i = 0; i < carts.length; i++) {    
+        if (carts[i].Item.Number == self.Number()) {
+            tCount += parseInt(carts[i].Count);
+        }
+    }
+    self.oldCount = tCount;
+    self.TotalCount = ko.observable(tCount);
+
+    self.countTotalCount = function () {      
+        var localCount = 0;
+        var localcarts = GetCart();
+        for (var i = 0; i < localcarts.length; i++) {              
+            if (localcarts[i].Item.Number == self.Number()) {
+                localCount += parseInt(localcarts[i].Count);
+            }
+        }
+        self.TotalCount(parseInt(localCount));
+        self.oldCount = parseInt(localCount);
+    }
+
+    self.setCount = function (newValue) {
+        if (isNumeric(newValue)) {            
+            if (newValue.substring(0, 1) === "0") {
+              //  console.log("Inside");               
+                BasketController.removeAllItemByNumber(self.Number());
+                self.countTotalCount();
+                categoryController.renderCartItemsInBasket();
+                return;
+            }
+            var value = parseInt(newValue);           
+            var oldC = parseInt(self.oldCount);         
+            if (value > oldC) {
+             //   console.log("verhniy");
+                var bigger = value - oldC;           
+                var firstItem = BasketController.getBasketItemByNumber(self.Number());
+                if (firstItem) {
+                    BasketController.increaseCartItemAmount(firstItem.Id, bigger);
+                } else {
+                    var modifIds = self.getModIds();                    
+                    BasketController.addCartItem(self.Number().toString(), bigger.toString(), modifIds);
+                }              
+            }           
+            else if (value < oldC) {
+             //   console.log("nijniy");
+                var smaller = oldC - newValue;
+                for (var i = 0; i < smaller; i++) {
+                    BasketController.removeItemByNumber(self.Number());
+                }
+            }              
+            self.countTotalCount();
+            categoryController.renderCartItemsInBasket();
+            return;
+        }
+        if (self.oldCount === undefined) {           
+            BasketController.removeAllItemByNumber(self.Number());
+        } else {
+            self.TotalCount(self.oldCount); }
+        self.countTotalCount();
+        categoryController.renderCartItemsInBasket();
+        return;     
+    };
+
+    self.getModIds = function() {
+        var ids = [];
+        for (var i = 0; i < self.ModifierGroups().length; i++) {
+            for (var j = 0; j < self.ModifierGroups()[i].selectedModifiers().length; j++) {
+                ids.push(self.ModifierGroups()[i].selectedModifiers()[j].Code);
+            }
+            if (self.ModifierGroups()[i].selectedModifier) {
+                ids.push(self.ModifierGroups()[i].selectedModifier().Code);
+            }
+        }
+        ids.sort();
+        return ids;
+    };
+
+    self.updateCounter = function () {   
+        self.countTotalCount();    
+    };
+
+    self.incrementZCounter = function () {
+        var previousCount = self.ZCount();
+        self.ZCount(previousCount + 1);       
+    };
+
+    self.decrementZCounter = function () {
+        var previousCount = self.ZCount();
+        self.ZCount(previousCount - 1);       
+    };
+
+    self.setZCounter = function (zcount) {
+        self.ZCount(zcount);
+    };
+
+    self.hasChilds = function() {
+        return self.Childs && self.Childs().length > 0;
+    };
+
+    var modifierGroups = new Array();
+    for (var i = 0; i < item.ModifierGroups.length; ++i) {
+        modifierGroups.push(new ModifierGroup(item.ModifierGroups[i]));
+    }
+    self.ModifierGroups = ko.observableArray(modifierGroups);
+
+    var childs = new Array();
+    if (item.Childs !== null && item.Childs !== undefined && item.Childs.length>0) {
+        for (var i = 0; i < item.Childs.length; ++i) {
+            childs.push(new CartItem(item.Childs[i], 0, ""));
+        }
+        self.Childs = ko.observableArray(childs);
+    }
+    
+    self.ControlModifierGroups = function () {
+        if (self.ModifierGroups) {
+            for (var i = 0; i< self.ModifierGroups().length; i++) {                 
+                        //console.log(self.ModifierGroups()[i]);
+                        self.ModifierGroups()[i].ControlModifiers();                               
+            }
+        }
+    }
+}
+
+function Cart(item) {
+    var self = this;
+    self.Name = item.Name;
+    self.Number = item.Number;
+    self.Price = item.Price;
+    self.PicturePath = item.PicturePath;
+    self.Weight = item.Weight;
+    self.IsCoupon = item.IsCoupon;
+    self.Index = item.Index;
+    self.IsDelivery = item.IsCoupon;
+    self.Description = item.Description;
+    self.ModifierGroups = ko.observableArray();
+
+    var modifierGroups = new Array();
+    for (var i = 0; i < item.ModifierGroups.length; ++i) {
+        modifierGroups.push(new MG(item.ModifierGroups[i]));
+    }
+    if (modifierGroups.length > 0) {
+        self.ModifierGroups = modifierGroups;
+    } else {
+        self.ModifierGroups = [];
+    }
+
+    var childs = new Array();
+    for (var i = 0; i < item.Childs.length; ++i) {
+        childs.push(new Cart(item.Childs[i]));
+    }
+    if (childs.length > 0) {
+        self.Childs = childs;
+    } else {
+        self.Childs = [];
+    }
+}
+
+function MG(modifierGroup) {
+    var self = this;
+    self.Name = modifierGroup.Name;
+    self.MinimumSelected = modifierGroup.MinimumSelected;
+    self.MaximumSelected = modifierGroup.MaximumSelected;
+    self.ShowPopUp = modifierGroup.ShowPopUp;
+    //self.Modifiers = new M(modifierGroup.Modifiers);
+    var modifiers = new Array();
+    var length = modifierGroup.Modifiers
+        ? modifierGroup.Modifiers.length
+        : 0;
+    for (var i = 0; i < length; ++i) {
+        modifiers.push(new M(modifierGroup.Modifiers[i]));
+    }
+    if (modifiers.length > 0) {
+        self.Modifiers = modifiers;
+    } else {
+        self.Modifiers = [];
+    }
+}
+
+function M(modifier) {
+    var self = this;
+    self.Name = modifier.Name;
+    self.Code = modifier.Code;
+    self.Quantity = modifier.Quantity;
+}
+
+function ModifierGroup(modifierGroup) {
+    var self = this;
+    //self.ModifierGroup = modifierGroup;
+    self.Name = modifierGroup.Name;
+    self.MinimumSelected = modifierGroup.MinimumSelected;
+    self.MaximumSelected = modifierGroup.MaximumSelected;
+   
+    var modifiers = new Array();
+    var length = modifierGroup.Modifiers
+        ? modifierGroup.Modifiers.length
+        : 0;
+    for (var i = 0; i < length; ++i) {
+        modifiers.push(new Modifier(modifierGroup.Modifiers[i]));
+    }
+    self.Modifiers = ko.observableArray(modifiers);
+
+    self.setModifiers = function (item) {
+        var mod = new Modifier(item);
+        var index = -1;
+        for (var i = 0; i < self.selectedModifiers().length; i++) {
+            if (self.selectedModifiers()[i].Code === mod.Code) {
+                index = i;
+             //   console.log("finded");                
+                break;             
+            }
+        }
+        
+        if (index>=0) {          
+            for (var i = 0; i < self.Modifiers().length; i++) {
+                if (self.Modifiers()[i].Code === mod.Code) {
+                    self.Modifiers()[i].IsChecked(false);
+                    mod.IsChecked(false);
+               //     console.log("removed");                   
+                    self.selectedModifiers.remove(function (modif) {
+                        return modif.Code == item.Code;
+                    });
+                }             
+            }
+        } else {
+           
+            for (var i = 0; i < self.Modifiers().length; i++) {
+                if (self.Modifiers()[i].Code === mod.Code) {
+                    self.Modifiers()[i].IsChecked(true);
+              //      console.log("added");
+                    self.selectedModifiers.push(mod);
+                }
+            }
+        }
+      //  console.log(self.selectedModifiers());
+    }
+    self.setModifier = function (item) {
+     //   console.log("Radio");
+        var mod = item;
+        var findex = -1;
+        var pindex = -1;
+        var x;
+        for (var i = 0; i < self.Modifiers().length; i++) {
+            if (self.Modifiers()[i].Code === mod.Code) {
+                findex = i;
+                x = self.Modifiers()[i];
+         //       console.log("finded1");
+            }
+            if (self.Modifiers()[i].Code == self.IsSelected()) {
+                pindex = i;
+          //      console.log("finded2");
+            }
+        }
+        if (findex === pindex) {            
+          //  console.log("NotChanged");
+        } else {
+                self.selectedModifier = ko.observable(x);
+                self.IsSelected(x.Code);
+          //      console.log("Changed");
+          //  console.log(self.IsSelected());
+        }                 
+    }
+
+    self.ControlModifiers = function () {
+        if (self.Modifiers) {
+            for (var i = 0; i < self.Modifiers().length; i++) {
+                if (self.Modifiers()[i].Quantity > 0 && self.MinimumSelected > 0) {
+                    self.IsSelected = ko.observable(self.Modifiers()[i].Code);
+                    self.selectedModifier = ko.observable(self.Modifiers()[i]);
+                }
+                if (self.Modifiers()[i].Quantity > 0 && self.MinimumSelected == 0) {
+                    self.selectedModifiers.push(self.Modifiers()[i]);
+                    self.Modifiers()[i].IsChecked(true);
+                }
+            }
+        }     
+    }
+
+    if (self.Modifiers().length > 0  && self.MinimumSelected > 0) {
+        self.IsSelected = ko.observable(self.Modifiers()[0].Code);
+        self.selectedModifier = ko.observable(self.Modifiers()[0]);
+    }  
+    self.selectedModifiers = ko.observableArray();
+};
+
+function Modifier(modifier) {
+    var self = this;
+    self.Name = modifier.Name;
+    self.Code = modifier.Code;
+    self.IsChecked = ko.observable(false);  
+    self.Quantity = modifier.Quantity;
+    self.DynamicQuantity = ko.computed(function() {
+        return self.IsChecked() ? 1 : 0;
+    });
+};
+
+function CartViewModel() {
+    var self = this;
+    //var items = GetCart();
+    //var cartItems = new Array();
+    //for (var i = 0; i < items.length; i++) {
+    //    cartItems.push(new CartItem(items[i].Item, items[i].Count));
+    //}
+    self.CartItems = ko.observableArray();
+    self.ComboItems = ko.observableArray();
+    self.PhoneNumber = ko.observable("");
+    self.LastName = ko.observable("");
+    self.House = ko.observable("");
+    self.Building = ko.observable("");
+    self.Entry = ko.observable("");
+    self.Floor = ko.observable("");
+    self.Apartments = ko.observable("");
+    self.EntryCode = ko.observable("");
+    self.StreetId = ko.observable("");
+    self.CityId = ko.observable("");
+
+    self.Streets = ko.observableArray([]);
+    self.CityId.subscribe(function (newId) {
+        $.ajax({
+            type: 'GET',
+            url: "/Cart/Streets?cityId="+newId,
+            dataType: 'json',
+            success: function (result) {
+                self.Streets(result);
+            }
+        });
+    });
+    self.TypeId = ko.observable("");
+    self.OrderSum = ko.observable("");
+    self.ChangeSum = ko.observable(""); 
+    self.Comment = ko.observable("");
+    //self.PersonCount = ko.observable("");
+    self.DeliveryTime = ko.observable("");
+    self.OrderType = ko.observable();
+    self.OrderTypeEntity = ko.observable();
+    self.DeliveryType = ko.observable();
+    self.PickupType = ko.observable();
+    self.PaymentType = ko.observable("");
+    self.IsAgreement = ko.observable("");
+    self.BranchId = ko.observable("");
+    self.RecaptchaResponse = ko.observable("");
+
+    self.Hours = ko.observableArray();
+    self.Minutes = ko.observableArray();
+
+    self.Hour = ko.observable();
+    self.Minute = ko.observable();
+
+    self.setCartItems=function() {
+        var items = GetCart();
+        var cartItems = new Array();
+        //self.OrderSum(0);
+        //self.ChangeSum(0);
+        var allsum = 0;
+        for (var i = 0; i < items.length; i++) {
+            cartItems.push(new CartItem(items[i].Item, items[i].Count));
+            //var previousSum = self.OrderSum();
+            allsum += parseInt(cartItems[i].Count() * cartItems[i].Price());
+            //self.OrderSum(parseInt(previousSum + parseInt(cartItems[i].Count() * cartItems[i].Price())));           
+        }
+
+        var ids = GetAllComboIds();
+        var comboItems = new Array();
+        for (var i = 0; i < ids.length; i++) {
+            var item = GetComboFromCart(ids[i]);
+            if (item !== null && item !== undefined) {
+                var comboSum = item.ComboItems[0].Item.Price + item.ComboItems[1].Item.Price;
+                comboItems.push({
+                    Price: comboSum,
+                    Number: item.ParentNumber,
+                    Count: 1,
+                    Left: new CartItem(item.ComboItems[0].Item, item.ComboItems[0].Item.Number),
+                    Right: new CartItem(item.ComboItems[1].Item, item.ComboItems[1].Item.Number)
+                });
+                allsum += comboSum;
+            }
+        }
+        
+        self.OrderSum(allsum);
+        self.CartItems(cartItems);
+        self.ComboItems(comboItems);
+        //console.log(self.CartItems());
+    }
+
+    self.setRecaptchaResponse=function(response) {
+        self.RecaptchaResponse(response);
+    }
+
+    self.setEmptyBasket= function() {
+        var items = GetCart();
+        for (var i = 0; i < items.length; i++) {
+            BasketController.removeExactCartItem(items[i].Id);
+        }
+        var comboIds = GetAllComboIds();
+        for (var i = 0; i < comboIds.length; i++) {
+            RemoveComboItem(comboIds[i]);
+        }
+        categoryController.renderCartItemsInBasket2();
+    }
+    
+    self.InitializeOrderTypes = function (items) {
+        if (items.length > 1) {
+            self.DeliveryType(new OrderType(items[0], "Доставить через"));
+            self.PickupType(new OrderType(items[1], "Забрать через"));
+        }
+        self.OrderType("delivery");
+    }
+
+    self.SetTime = function (orderType) {
+        var hour = orderType().getHour();
+        var minute = orderType().getMinute();
+        
+        var hours = new Array();
+        var minutes = new Array();
+
+        for (var i = hour; i < 8; i++) {
+            hours.push(i);
+        }
+        for (var i = 0; i < 60; i++) {
+            minutes.push(i);
+        }
+        self.Hours(hours);
+        self.Minutes(minutes);
+        self.Minute(minute);
+        self.Hour(hour);
+    }
+    
+    self.CurrentOrderType = ko.computed(function () {
+        if (self.OrderType() === undefined || self.OrderType() === null) return null; 
+        if (self.OrderType() === "delivery") {
+            self.OrderTypeEntity(self.DeliveryType());
+            self.SetTime(self.DeliveryType);
+            return self.DeliveryType();
+        } else {
+            self.OrderTypeEntity(self.PickupType());
+            self.SetTime(self.PickupType);
+            return self.PickupType();
+        }
+    });
+
+    self.CheckTime = ko.computed(function () {
+        if (self.OrderTypeEntity() === undefined || self.OrderTypeEntity() === null) return null; 
+        if (self.OrderTypeEntity().getAllMinute() > (self.Hour() * 60 + self.Minute())) {
+            self.Hour(self.OrderTypeEntity().getHour());
+            self.Minute(self.OrderTypeEntity().getMinute());
+        }
+        return null;
+    });
+
+    self.GetMinimalSum = function() {
+        return self.OrderTypeEntity().MinimalSum;
+    }
+}
+
+function OrderType(item,displayName) {
+    var self = this;
+    self.Name = item.Name;
+    self.Id = item.Id;
+    self.MinimalSum = item.MinimalSum;
+    self.DeliveryTime = item.DeliveryTime;
+    self.Preparationtime = item.Preparationtime;
+    self.ProcessingTime = item.ProcessingTime;
+    self.DisplayName = displayName;
+
+    self.getHour = function() {
+        return Math.floor((self.DeliveryTime + self.Preparationtime + self.ProcessingTime)/60);
+    }
+    self.getMinute = function () {
+        return (self.DeliveryTime + self.Preparationtime + self.ProcessingTime) % 60;
+    }
+
+    self.getAllMinute = function() {
+        return self.DeliveryTime + self.Preparationtime + self.ProcessingTime;
+    }
+}
+
+function ResponseViewModel() {
+    var self = this;
+    self.OrderNumber = ko.observable("");
+    self.Name = ko.observable("");
+    self.Telephone = ko.observable("");
+    self.Name = ko.observable("");  
+    self.DeliveryAddress = ko.observable("");
+    self.OrderType = ko.observable("");
+    self.OrderSum = ko.observable("");
+    self.ChangeSum = ko.observable("");
+    self.Change = ko.observable("");
+    self.Comment = ko.observable("");
+    self.DeliveryTime = ko.observable("");
+    self.Discount = ko.observable("");
+    //public int ContragentId { get; set; }
+    //public int CurrencyId { get; set; }       
+    self.setResponses = function (response) {
+        self.OrderNumber = ko.observable(response.orderNumber);
+        self.Telephone = ko.observable(response.telephone);
+        self.Name = ko.observable(response.name);            
+        self.DeliveryAddress = ko.observable(response.deliveryAddress);
+        self.OrderType = ko.observable(response.orderType);
+        self.OrderSum = ko.observable(response.orderSum);
+        self.ChangeSum = ko.observable(response.changeSum);
+        self.Change = ko.observable(response.change);
+        self.Comment = ko.observable(response.comment);
+        self.DeliveryTime = ko.observable(response.deliveryTime);
+        self.Discount = ko.observable(response.discount);
+    }
+}
+
+var Filter = function (name, id) {
+    var self = this
+    self.Name = name;
+    self.Id = id;
+};
+
+function CategoryViewModel(items) { 
+    var self = this;
+
+    self.Filters = ko.observableArray([
+        new Filter("По умолчанию...", 0),
+        new Filter("Цене: Дешевые ВЫШЕ", 1),
+        new Filter("Цене: Дорогие ВЫШЕ", 2),
+        new Filter("Алфавиту: от А до Я", 3),
+        new Filter("Алфавиту: от Я до А", 4)
+    ]);
+
+    self.selectedFilter = ko.observable(self.Filters()[0]);
+    self.leftChildIndex = ko.observable(0);
+    self.rightChildIndex = ko.observable(0);
+    self.ParentItem = ko.observable();
+    self.IsSingle = ko.observable(true);
+
+
+    var categoryItems = new Array();
+    //self.IsLeft = ko.observable(true);
+    if (items) {
+        for (var i = 0; i < items.length; i++) {
+            var cartItem = GetFromCart(items[i].Number);
+            var count = cartItem ? cartItem.Count : 0;
+            //console.log("cat1");
+            categoryItems.push(new CartItem(items[i], count));
+            //console.log("cat2");
+        }
+        self.Items = ko.observableArray(categoryItems);
+    } else {
+        var cItems = GetCart();
+       // console.log(cItems);
+        for (var i = 0; i < cItems.length; i++) {
+            var cartItemO = cItems[i];
+            var countO = cartItemO ? cartItemO.Count : 0;
+            var newItem = new CartItem(cItems[i].Item, countO, cItems[i].Id);
+            newItem.ControlModifierGroups();
+            categoryItems.push(newItem);
+        }
+        self.Items = ko.observableArray(categoryItems);
+    }
+   
+    self.refresh = function() {
+        var cItems = GetCart();
+        var tempItems = new Array();
+        for (var i = 0; i < cItems.length; i++) {
+            var cartItemO = cItems[i];
+            var countO = cartItemO ? cartItemO.Count : 0;
+            var newItem = new CartItem(cItems[i].Item, countO, cItems[i].Id);
+            newItem.ControlModifierGroups();
+            tempItems.push(newItem);
+        }    
+        self.Items = ko.observableArray(tempItems);     
+    }
+
+    self.CurrentItem = ko.observable();
+    self.HalfItemsL = ko.observableArray();
+    self.HalfItemsR = ko.observableArray();
+
+    self.LeftItem = ko.observable();
+    self.RightItem = ko.observable();
+
+    self.AccessableSingle = ko.computed(function () {
+        return self.CurrentItem;
+    });
+
+    self.AccessableBoth = ko.computed(function () {
+        //console.log(self.HalfItemsL , self.HalfItemsR , self.LeftItem , self.RightItem);
+        return self.HalfItemsL && self.HalfItemsR && self.LeftItem && self.RightItem;
+    });
+
+    self.setInputCount = function (number, count) {
+        var isTrue = BasketController.isToPopUp(number);
+        if (isTrue) {
+            var item = self.getItemById(number);
+            self.setCurrentItem(item);
+            var root = $('body');
+            root.toggleClass('is-modal');
+            self.setCurrentItemCount(parseInt(count));
+        } else {
+            for (var i = 0; i < self.Items().length; i++) {
+                if (self.Items()[i].Number() == number) {
+                    self.Items()[i].setCount(count);
+                    return;
+                }
+            }
+        }     
+    }
+    
+    self.sortedItems = ko.computed(function () {
+        var category = self.selectedFilter();
+        var original = self.Items().slice();
+        switch (category.Id) {
+            case 1:
+                return original.sort(function (left, right) {
+                    return left.Item.Price == right.Item.Price ? 0 : (left.Item.Price < right.Item.Price ? -1 : 1);
+                });
+            case 2:
+                return original.sort(function (right, left) {
+                    return left.Item.Price == right.Item.Price ? 0 : (left.Item.Price < right.Item.Price ? -1 : 1);
+                });
+            case 3:
+                return original.sort(function (left, right) {
+                    return left.Item.Name == right.Item.Name ? 0 : (left.Item.Name < right.Item.Name ? -1 : 1);
+                });
+            case 4:
+                return original.sort(function (right, left) {
+                    return left.Item.Name == right.Item.Name ? 0 : (left.Item.Name < right.Item.Name ? -1 : 1);
+                });
+            default:
+                return original;
+            }
+    });
+    
+    self.setCurrentItem = function (item) {
+        if (item.Childs() && item.Childs().length>0) {
+            self.IsSingle(false);
+            self.ParentItem(item);
+            if (!(self.HalfItemsL().length>0 && self.HalfItemsR().length>0)) {
+                var array1 = new Array();
+                var array2 = new Array();
+                for (var i = 0; i < item.Childs().length; i++) {
+                    array1.push(new CartItem(item.Childs()[i].Item, 0, item.Childs()[i].Id));
+                    array2.push(new CartItem(item.Childs()[i].Item, 0, item.Childs()[i].Id));
+                } 
+                self.HalfItemsL(array1);
+                self.HalfItemsR(array2);
+            }
+
+            self.LeftItem(self.HalfItemsL()[self.leftChildIndex()]);
+            self.RightItem(self.HalfItemsR()[self.rightChildIndex()]);
+
+            var slickerL = $('.c-popup__slider--l');
+            var slickerR = $('.c-popup__slider--r');
+            if (slickerL != undefined) {
+                if (slickerL.not('.slick-initialized').length <= 0) {
+                    slickerL.slick("unslick");
+                    slickerR.slick("unslick");
+                }
+                
+            slickerL.not('.slick-initialized').slick({
+                    dots: false,
+                    vertical: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    verticalSwiping: true,
+                    swipeToSlide: true
+                });
+            slickerR.not('.slick-initialized').slick({
+                    dots: false,
+                    vertical: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    verticalSwiping: true,
+                    swipeToSlide: true
+                });
+                slickerL.slick('refresh');
+                slickerR.slick('refresh');
+                
+                slickerL.on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+                    //console.log(nextSlide);
+                    self.LeftItem(self.HalfItemsL()[nextSlide]);
+                });
+
+                slickerR.on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+                    //console.log(nextSlide);
+                    self.RightItem(self.HalfItemsR()[nextSlide]);
+                });
+            }
+        }
+        else {
+            self.IsSingle(true);
+            self.CurrentItem(item);
+        }
+    }
+
+    self.setCurrentItemInCart = function (item, isSingle,isLeft) {
+        if (isSingle) {
+            self.CurrentItem(item);
+        } else {
+            //self.IsLeft(isLeft);
+            var left = new CartItem(item.ComboItems[0].Item, 0, item.ComboItems[0].Id);
+            var right = new CartItem(item.ComboItems[1].Item, 0, item.ComboItems[1].Id);
+            left.ControlModifierGroups();
+            right.ControlModifierGroups();
+            self.LeftItem(left);
+            self.RightItem(right);
+            self.ParentItem({Name: item.ParentName, PicturePath: item.ParentPicturePath , Id:item.ParentNumber});
+            if (isLeft === true) {
+                self.CurrentItem(self.LeftItem());
+            }
+            else {
+                self.CurrentItem(self.RightItem());
+            }
+        }
+        self.IsSingle(isSingle);
+    }
+
+    self.setCurrentItemCount = function (zcount) {
+        if (self.CurrentItem()) {
+            self.CurrentItem().ZCount(zcount);
+        }
+    }
+
+    self.getItemById = function (id) {
+        for (var i = 0; i < self.Items().length; i++) {
+            if (self.Items()[i].Number() == id) {
+                return self.Items()[i];
+            }
+        }
+        return null;
+    }
+    self.IsCurrentItemExist = function() {
+        if (self.CurrentItem) {
+            return true;
+        }
+        return false;
+    }
+    self.getExactItem = function (id) {       
+        for (var i = 0; i < self.Items().length; i++) {
+            if (self.Items()[i].Id.toString() === id) {
+                return self.Items()[i];
+            }
+        }
+        return null;
+    }
+
+    self.getExactComboItem = function (id) {
+        return GetComboFromCart(id);
+    }
+    //self.getComboModifierIds = function (isLeft) {
+    //    var item = (isLeft) ? self.LeftItem() : self.RightItem();
+    //    var ids = [];
+    //    if (item) {
+    //        for (var i = 0; i < item.ModifierGroups().length; i++) {
+    //            for (var j = 0; j < item.ModifierGroups()[i].selectedModifiers().length; j++) {
+    //                ids.push(item.ModifierGroups()[i].selectedModifiers()[j].Code);
+    //            }
+    //            if (item.ModifierGroups()[i].selectedModifier) {
+    //                ids.push(item.ModifierGroups()[i].selectedModifier().Code);
+    //            }
+    //        }
+    //        ids.sort();
+    //    }
+    //    return ids;
+    //}
+
+    self.getModifierIds = function(id) {
+        var item = self.getItemById(id);
+        var ids = [];
+        if (item) {
+            for (var i = 0; i < item.ModifierGroups().length; i++) {
+                for (var j = 0; j < item.ModifierGroups()[i].selectedModifiers().length; j++) {
+                    ids.push(item.ModifierGroups()[i].selectedModifiers()[j].Code);
+                }
+                if (item.ModifierGroups()[i].selectedModifier) {
+                    ids.push(item.ModifierGroups()[i].selectedModifier().Code);
+                }
+            }           
+            ids.sort();
+        }
+        return ids;
+    }
+
+    self.getExactModifierIds = function (id) {
+        var item = self.getExactItem(id);
+        var ids = [];
+        if (item) {
+            for (var i = 0; i < item.ModifierGroups().length; i++) {
+                for (var j = 0; j < item.ModifierGroups()[i].selectedModifiers().length; j++) {
+                    ids.push(item.ModifierGroups()[i].selectedModifiers()[j].Code);
+                }
+                if (item.ModifierGroups()[i].selectedModifier) {
+                    ids.push(item.ModifierGroups()[i].selectedModifier().Code);
+                }
+            }
+            ids.sort();
+        }
+        return ids;
+    }
+}
+
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}

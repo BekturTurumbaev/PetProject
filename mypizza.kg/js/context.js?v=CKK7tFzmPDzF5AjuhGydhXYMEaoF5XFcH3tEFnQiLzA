@@ -1,0 +1,9 @@
+﻿var context;
+
+function GetMenuItem(number) {
+    for (var i = 0; i < context.length; i++) {
+        if (context[i].Number == number)
+            return context[i];
+    }
+    return null;
+}
