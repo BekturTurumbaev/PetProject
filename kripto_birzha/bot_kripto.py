@@ -32,7 +32,7 @@ dp = Dispatcher(bot=bot, storage=storage)
 conn = psycopg2.connect(
     dbname='birzha', 
     user='postgres', 
-    password='05052005', 
+    password='', 
     host='localhost')
 cursor = conn.cursor()
 

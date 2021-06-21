@@ -3,7 +3,7 @@ import psycopg2
 conn = psycopg2.connect(
     dbname='imperia', 
     user='postgres', 
-    password='05052005', 
+    password='', 
     host='localhost')
 cursor = conn.cursor()
 
