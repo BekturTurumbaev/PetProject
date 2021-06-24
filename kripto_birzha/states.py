@@ -1,5 +1,6 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
+
 class BotStates(StatesGroup):
     await_first = State()
     await_second = State()
@@ -13,11 +14,3 @@ class BotStates(StatesGroup):
     await_nine = State()
     await_ten = State()
     await_elev = State()
-    await_twelve = State()
-    await_thirty = State()
-    # await_four = State()
-    # await_four = State()
-    # await_four = State()
-    # await_four = State()
-    # await_four = State()
-    # await_four = State()

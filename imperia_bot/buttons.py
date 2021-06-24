@@ -2,32 +2,18 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import psycopg2
 import selec
 
+dbname = input("Your database name: ")
+dbuser = input("Your database user: ")
+dbpswd = input("Your database password: ")
+
 conn = psycopg2.connect(
-    dbname='imperia', 
-    user='postgres', 
-    password='', 
+    dbname=dbname, 
+    user=dbuser, 
+    password=dbpswd, 
     host='localhost')
 cursor = conn.cursor()
 
 class Main:
-    def retur1(self):
-        markup = InlineKeyboardMarkup()
-        button1 = InlineKeyboardButton(text='Назад', callback_data='ret1')
-        markup.add(button1)
-        return markup
-
-    def retur2(self):
-        markup = InlineKeyboardMarkup()
-        button2 = InlineKeyboardButton(text='Назад', callback_data='ret2')
-        markup.add(button2)
-        return markup
-
-    def retur3(self):
-        markup = InlineKeyboardMarkup()
-        button3 = InlineKeyboardButton(text='Назад', callback_data='ret3')
-        markup.add(button3)
-        return markup
-
     def mains(self):
         markup = InlineKeyboardMarkup()
         button1 = InlineKeyboardButton(text='Меню 📜', callback_data='menu')
@@ -45,22 +31,46 @@ class Main:
         button3 = InlineKeyboardButton(text='Роллы 🍱', callback_data='roll')
         button4 = InlineKeyboardButton(text='Салаты 🥗', callback_data='salad')
         button5 = InlineKeyboardButton(text='Закуски 🍢', callback_data='snack')
+        button6 = InlineKeyboardButton(text='Назад ↩️', callback_data='return')
         markup.add(button1)
         markup.add(button2)
         markup.add(button3)
         markup.add(button4)
         markup.add(button5)
+        markup.add(button6)
+        return markup
+
+    def retur(self):
+        markup = InlineKeyboardMarkup()
+        button1 = InlineKeyboardButton(text='Назад ↩️', callback_data='return_menu')
+        markup.add(button1)
+        return markup
+
+class Shares:
+    def more(self, i):
+        markup = InlineKeyboardMarkup()
+        button1 = InlineKeyboardButton(text='Подробнее.', callback_data=f'{i}')
+        markup.add(button1)
+
+        return markup
+
+    def retarun(self):
+        markup = InlineKeyboardMarkup()
+        button1 = InlineKeyboardButton(text='Назад ↩️', callback_data='return_main_menu')
+        markup.add(button1)
         return markup
 
 class Vakancies:
     def vaka(self):
-        cmd_0 = 'SELECT headers FROM vacancies'
+        cmd_0 = 'SELECT headers FROM vacancies;'
         cursor.execute(cmd_0)
-        table_name = cursor.fetchall()
-        ans = str(table_name[0]).replace("'","").replace('(','').replace(')','').replace(',','')
+        table_name = cursor.fetchone()
+        ans = table_name[0]
         markup = InlineKeyboardMarkup()
         button1 = InlineKeyboardButton(text=f"{ans}", callback_data='vakas')
+        button2 = InlineKeyboardButton(text="Назад ↩️", callback_data='ret')
         markup.add(button1)
+        markup.add(button2)
 
         return markup
 
@@ -68,14 +78,30 @@ class Vakancies:
         cmd_0 = 'SELECT headers FROM vacancies'
         cursor.execute(cmd_0)
         table_name = cursor.fetchall()
-        ans1 = str(table_name[1]).replace("'","").replace('(','').replace(')','').replace(',','')
-        ans2 = str(table_name[2]).replace("'","").replace('(','').replace(')','').replace(',','')
+        ans1 = table_name[1][0]
+        ans2 = table_name[2][0].strip()
         markup = InlineKeyboardMarkup()
         button1 = InlineKeyboardButton(text=f"{ans1}", callback_data='vak1')
         button2 = InlineKeyboardButton(text=f"{ans2}", callback_data='vak2')
+        button3 = InlineKeyboardButton(text="Назад ↩️", callback_data='return_main_vakancies')
         markup.add(button1, button2)
+        markup.add(button3)
 
         return markup
+
+    def return_vakan(self):
+        markup = InlineKeyboardMarkup()
+        button1 = InlineKeyboardButton(text='Назад ↩️', callback_data='return_vakan')
+        markup.add(button1)
+        return markup
+
+class Company:
+    def more_company(self, i):
+        markup = InlineKeyboardMarkup()
+        button1 = InlineKeyboardButton(text='Подробнее.', callback_data=f'{i}')
+        markup.add(button1)
+        return markup
+
 
 class Price:
     def price1(self):

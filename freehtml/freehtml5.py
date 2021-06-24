@@ -2,7 +2,6 @@ from sys import version
 import requests
 import psycopg2
 import os 
-import csv
 from bs4 import BeautifulSoup
 
 class Scraper:
@@ -117,12 +116,14 @@ def amount_of_pages():
     except requests.ConnectionError:
         print('Ошибка соединение с сервером!')
 try:
-    bd_password = input("Введите пароль от Базы Данных: ")
+    dbname = input("Your database name: ")
+    dbuser = input("Your database user: ")
+    dbpswd = input("Your database password: ")
 
     conn = psycopg2.connect(
-        dbname='postgres', 
-        user='postgres', 
-        password=bd_password, 
+        dbname=dbname, 
+        user=dbuser, 
+        password=dbpswd, 
         host='localhost')
     cursor = conn.cursor()
 

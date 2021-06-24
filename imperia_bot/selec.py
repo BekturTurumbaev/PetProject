@@ -1,20 +1,23 @@
 import psycopg2
 
+dbname = input("Your database name: ")
+dbuser = input("Your database user: ")
+dbpswd = input("Your database password: ")
+
 conn = psycopg2.connect(
-    dbname='imperia', 
-    user='postgres', 
-    password='', 
+    dbname=dbname, 
+    user=dbuser, 
+    password=dbpswd, 
     host='localhost')
 cursor = conn.cursor()
 
 def sta():
     cmd = 'SELECT description FROM vacancies'
     cursor.execute(cmd)
-    table_name = cursor.fetchall()
-    for t in table_name:
-        ans1 = str(table_name[0]).replace("'","").replace('(','').replace(')','')
-        ans2 = str(table_name[1]).replace("'","").replace('(','').replace(')','')
-        ans3 = str(table_name[2]).replace("'","").replace('(','').replace(')','')
+    desc = cursor.fetchall()
+    ans1 = desc[0][0]
+    ans2 = desc[1][0]
+    ans3 = desc[2][0]
 
     return ans1, ans2, ans3
 
